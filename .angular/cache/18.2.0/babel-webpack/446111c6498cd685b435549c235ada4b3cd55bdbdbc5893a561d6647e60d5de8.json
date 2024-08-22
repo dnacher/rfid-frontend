@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { AbstractDomainEntity } from './AbstractDomainEntity';\nexport class Asistencia extends AbstractDomainEntity {}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
