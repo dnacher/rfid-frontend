@@ -52,6 +52,8 @@ export class SidebarComponent implements OnInit {
     this.menuPrincipal = [
       new PaginaItem('Inicio', '/asistencia', 'Principal', true),
       new PaginaItem('Asistencia', '/asistencia', 'Principal', false),
+      new PaginaItem('No Asistieron', '/no-asisten', 'Principal', false),
+      new PaginaItem('Biblioteca','/biblioteca', 'Principal', false),
     ];
     this.menuSeguridad = [
       new PaginaItem('Inicio', '/dashboard', 'Principal', true),

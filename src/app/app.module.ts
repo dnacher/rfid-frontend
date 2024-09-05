@@ -20,6 +20,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {AsistenciasComponent} from './modules/asistencia/asistencias.component';
+import {NoasistenComponent} from './modules/no-asisten/noasisten.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -27,11 +28,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {IndexComponent} from './modules/index/index.component';
 
 @NgModule({
   declarations: [
+    IndexComponent,
     AppComponent,
-    AsistenciasComponent
+    AsistenciasComponent,
+    NoasistenComponent,
+    BibliotecaComponent,
   ],
     imports: [
         BrowserModule,
@@ -57,6 +65,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
         MatSortModule,
         MatSnackBarModule,
         MatGridListModule,
+        MatCheckboxModule,
+        NgxSpinnerModule,
     ],
   exports: [
 

@@ -37,6 +37,11 @@
         {{botonMostrar}}
       </button>
     </mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-stroked-button (click)="exportToExcel()" [disabled]="!dataSource">
+        Exportar a Excel
+      </button>
+    </mat-grid-tile>
   </mat-grid-list>
 
   <mat-form-field>
@@ -54,31 +59,31 @@
       <!-- ID Column -->
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-        <td mat-cell *matCellDef="let row"> {{row.alumno.nombre}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
       </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="apellido">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
-        <td mat-cell *matCellDef="let row"> {{row.alumno.apellido}}</td>
+        <td mat-cell *matCellDef="let row"> {{row.apellido}}</td>
       </ng-container>
 
       <!-- Progress Column -->
-      <ng-container matColumnDef="uid">
+      <ng-container matColumnDef="uidcard">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Uid </th>
-        <td mat-cell *matCellDef="let row"> {{row.uid}}</td>
+        <td mat-cell *matCellDef="let row"> {{row.uidCard}}</td>
       </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="curso">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Curso </th>
-        <td mat-cell *matCellDef="let row"> {{row.cursoId}}</td>
+        <td mat-cell *matCellDef="let row"> {{row.curso.nombre}}</td>
       </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="fecha">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-        <td mat-cell *matCellDef="let row"> {{row.fecha | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td mat-cell *matCellDef="let row"> {{fecha | date: 'dd-MM-yyyy'}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

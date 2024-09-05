@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DefaultComponent } from './layouts/default/default.component';
 import {AsistenciasComponent} from './modules/asistencia/asistencias.component';
-import {AuthGuard} from './helpers/auth.guard';
-
-
+import {NoasistenComponent} from './modules/no-asisten/noasisten.component';
+import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
+import {IndexComponent} from './modules/index/index.component';
 
 const routes: Routes = [{
   path: '',
@@ -19,9 +19,20 @@ const routes: Routes = [{
     //   component: LoginComponent
     // },
     {
+      path: '',
+      component: IndexComponent,
+    },
+    {
       path: 'asistencia',
       component: AsistenciasComponent,
-      // canActivate: [AuthGuard]
+    },
+    {
+      path: 'no-asisten',
+      component: NoasistenComponent,
+    },
+    {
+      path: 'biblioteca',
+      component: BibliotecaComponent,
     }
     ]
 }];
