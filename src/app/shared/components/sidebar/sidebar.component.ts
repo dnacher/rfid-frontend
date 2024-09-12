@@ -50,19 +50,23 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.menuPrincipal = [
-      new PaginaItem('Inicio', '/asistencia', 'Principal', true),
+      new PaginaItem('Inicio', '/', 'Principal', true),
       new PaginaItem('Asistencia', '/asistencia', 'Principal', false),
       new PaginaItem('No Asistieron', '/no-asisten', 'Principal', false),
       new PaginaItem('Biblioteca','/biblioteca', 'Principal', false),
+      new PaginaItem('Libros','/libro', 'Principal', false),
+      new PaginaItem('Productos','/producto', 'Principal', false),
+      new PaginaItem('Usuario Cantina','/usuario-cantina', 'Principal', false),
+      new PaginaItem('Ventas','/ventas', 'Principal', false),
     ];
     this.menuSeguridad = [
-      new PaginaItem('Inicio', '/dashboard', 'Principal', true),
+      new PaginaItem('Inicio', '/', 'Principal', true),
       new PaginaItem('Usuario', '/usuario', '', false),
       new PaginaItem('Tipo de Usuario', '/tipo-usuario', '', false),
       new PaginaItem('Permisos', '/permisos', '', false),
     ];
     this.menuConfiguracion = [
-      new PaginaItem('Inicio', '/dashboard', 'Principal', true),
+      new PaginaItem('Inicio', '/', 'Principal', true),
       new PaginaItem('Banco', '/bancos', '', false),
       new PaginaItem('Compañias', '/companias', '', false),
       new PaginaItem('Cotizacion Vendedores', '/cotizacion-vendedores', '', false),

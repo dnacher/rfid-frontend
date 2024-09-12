@@ -32,6 +32,10 @@ import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {IndexComponent} from './modules/index/index.component';
+import {LibroComponent} from './modules/libro/libro.component';
+import {ProductoComponent} from './modules/producto/producto.component';
+import {UsuarioCantinaComponent} from './modules/usuarioCantina/usuario-cantina.component';
+import {VentasComponent} from './modules/ventas/ventas.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,10 @@ import {IndexComponent} from './modules/index/index.component';
     AsistenciasComponent,
     NoasistenComponent,
     BibliotecaComponent,
+    LibroComponent,
+    ProductoComponent,
+    UsuarioCantinaComponent,
+    VentasComponent,
   ],
     imports: [
         BrowserModule,

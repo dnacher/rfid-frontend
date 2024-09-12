@@ -1,0 +1,48 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.main-body {
+  padding-top: 20px;
+  margin: 0 auto;
+  max-width: 1348px;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.action {
+  display: flex;
+  gap: 5px;
+}
+
+.product-card {
+  min-width: 250px; /* Ajusta según lo que necesites */
+  max-width: 250px; /* Fija el ancho para todas las tarjetas */
+  min-height: 200px; /* Ajusta la altura mínima para todas las tarjetas */
+  max-height: 250px; /* Puedes ajustar esto para evitar que una tarjeta crezca más que otras */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Esto asegura que los botones queden alineados en la parte inferior */
+}
+.mat-card-header img {
+  width: 80px; /* Ajusta el tamaño de la imagen */
+  height: 80px; /* Ajusta el tamaño de la imagen */
+  object-fit: cover; /* Asegura que la imagen mantenga sus proporciones */
+}
+
+/* Para que todas las tarjetas tengan el mismo tamaño mínimo */
+.custom-tile {
+  display: flex;
+  justify-content: center;
+}
+
+/* Ajustar la disposición del grid para que funcione bien con el nuevo ancho */
+.grid-list {
+  justify-content: center; /* Centra el grid en la página */
+}
+
+
+
+
+

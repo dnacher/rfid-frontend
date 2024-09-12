@@ -32,15 +32,15 @@ export class LibroService {
   }
 
   saveLibro(libro: Libro): Observable<any> {
-    return this.http.post(`${this.baseUrl}`, {libro});
+    return this.http.post(`${this.baseUrl}`, libro);
   }
 
   updateLibro(libro: Libro): Observable<any> {
-    return this.http.put(`${this.baseUrl}`, {libro});
+    return this.http.put(`${this.baseUrl}`, libro);
   }
 
-  deleteLibro(id: number) {
-    this.http.delete(`${this.baseUrl}/${id}`)
+  deleteLibro(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
   }
 
 }
