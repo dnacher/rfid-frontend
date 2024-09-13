@@ -13,7 +13,6 @@ import {UsuarioCantinaService} from '../../service/usuario-cantina.service';
 import {UsuarioCantina} from '../../model/UsuarioCantina';
 import {Transaccion} from '../../model/Transaccion';
 import {TransaccionService} from '../../service/transaccion.service';
-import {logger} from 'codelyzer/util/logger';
 
 @Component({
   selector: 'app-libro',
@@ -28,6 +27,7 @@ export class VentasComponent implements OnInit {
   titulo = 'Ventas';
   productos: Inventario[];
   displayedColumns: string[] = [
+    'imagen',
     'nombre',
     'cantidad',
     'precio',
@@ -173,6 +173,25 @@ export class VentasComponent implements OnInit {
         this.spinnerService.hide();
       }
     });
+  }
+
+  increaseQuantity(row: any) {
+    row.cantidad += 1;
+    this.updateTable();
+  }
+
+  // Disminuir la cantidad de un producto
+  decreaseQuantity(row: any) {
+    if (row.cantidad > 1) {
+      row.cantidad -= 1;
+    } else {
+      this.removeFromCart(row);
+    }
+    this.updateTable();
+  }
+
+  updateTable() {
+    this.dataSource.data = [...this.dataSource.data];
   }
 
 }

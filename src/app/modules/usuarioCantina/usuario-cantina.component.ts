@@ -11,6 +11,7 @@ import {switchMap} from 'rxjs';
 import {UsuarioCantinaService} from '../../service/usuario-cantina.service';
 import {HistorialUsuarioCantina} from '../../model/HistorialUsuarioCantina';
 import {HistorialService} from '../../service/historial.service';
+import {TransaccionService} from '../../service/transaccion.service';
 
 @Component({
   selector: 'app-libro',
@@ -27,7 +28,8 @@ export class UsuarioCantinaComponent implements OnInit {
     'saldo',
     'tipoOperacion',
     'fecha',
-    'observaciones'
+    'observaciones',
+    'acciones'
   ];
   saldoForm = false;
   saldo = 0;
@@ -48,7 +50,8 @@ export class UsuarioCantinaComponent implements OnInit {
               private libroService: LibroService,
               private usuarioCantinaService: UsuarioCantinaService,
               private historialService: HistorialService,
-              private spinnerService: NgxSpinnerService) {
+              private spinnerService: NgxSpinnerService,
+              private transaccionService: TransaccionService) {
   }
 
   ngOnInit() {
@@ -246,6 +249,26 @@ export class UsuarioCantinaComponent implements OnInit {
     });
   }
 
+  getReporte(rfid) {
+    this.historialService
+      .findByUsuarioCantinaAlumnoUidCard(rfid)
+      .subscribe({
+        next: (response) => {
+          this.historialList = response.message;
+          this.dataSource = new MatTableDataSource(response.message);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        },
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error?.message || 'Ocurrió un error inesperado',
+          });
+        }
+      });
+  }
+
   private formatDate(date: Date): string {
     const d = new Date(date);
     const month = '' + (d.getMonth() + 1);
@@ -253,6 +276,49 @@ export class UsuarioCantinaComponent implements OnInit {
     const year = d.getFullYear();
 
     return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+  }
+
+  cancelar(row: HistorialUsuarioCantina) {
+    Swal.fire({
+      title: 'Realmente queres cancelar la compra?',
+      showDenyButton: true,
+      confirmButtonText: 'Si, Cancelar',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cancelarProceso(row);
+      } else if (result.isDenied) {
+        Swal.fire('No cancelado', '', 'info');
+      }
+    });
+  }
+
+  isGasto(row) {
+    return row === 'GASTO';
+  }
+
+  cancelarProceso(row: HistorialUsuarioCantina) {
+    this.isLoading = true;
+    this.spinnerService.show();
+
+    return this.transaccionService.cancelTransaccion(row.observaciones).subscribe({
+      next: (response) => {
+        console.log(response);
+        console.log(row.usuarioCantina.alumno.uidCard);
+        this.isLoading = false;
+        this.spinnerService.hide();
+        this.getReporte(row.usuarioCantina.alumno.uidCard);
+      },
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error?.message || 'Ocurrió un error inesperado',
+        });
+        this.isLoading = false;
+        this.spinnerService.hide();
+      }
+    });
   }
 
 

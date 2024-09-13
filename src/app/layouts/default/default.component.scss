@@ -14,3 +14,32 @@ mat-drawer-container {
 mat-drawer-content {
   padding: 20px;
 }
+
+/* Asegúrate de que el body ocupe toda la altura de la pantalla */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El contenedor principal debe ocupar todo el espacio disponible, excepto el footer */
+mat-drawer-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Asegura que el contenido (mat-drawer-content) crezca para ocupar todo el espacio posible */
+mat-drawer-content {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Asegura que el footer se quede siempre en la parte inferior */
+app-footer {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10; /* Asegura que el footer no quede debajo de otros elementos */
+  width: 100%;
+}

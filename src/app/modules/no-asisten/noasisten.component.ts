@@ -70,18 +70,33 @@ export class NoasistenComponent implements OnInit {
       Nombre: alumno.nombre,
       Apellido: alumno.apellido,
       Curso: alumno.curso.nombre,
-      Fecha: this.fecha,
+      Fecha: this.formatDate(this.fecha),
     }));
 
     // Crea una hoja de trabajo y un libro de trabajo
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const titulo = 'No asistieron ' + this.dateTitulo(this.fecha);
     const workbook: XLSX.WorkBook = {
-      Sheets: { 'Alumnos': worksheet },
-      SheetNames: ['Alumnos']
+      Sheets: { [titulo]: worksheet },
+      SheetNames: [titulo]
     };
 
     // Escribe el archivo Excel
-    XLSX.writeFile(workbook, 'alumnos.xlsx');
+    XLSX.writeFile(workbook, 'alumnos_' + this.dateTitulo(this.fecha) + '.xlsx');
+  }
+
+  private dateTitulo(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  private formatDate(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   mostrar() {

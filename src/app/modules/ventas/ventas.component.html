@@ -11,7 +11,7 @@
           <mat-card-title-group>
             <mat-card-title>{{product.producto.nombre}}</mat-card-title>
             <mat-card-subtitle>{{product.producto.precio | currency:'UYU'}}</mat-card-subtitle>
-            <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            <img mat-card-sm-image src="{{product.producto.imagenUrl}}">
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content>
@@ -35,17 +35,31 @@
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort>
 
+      <ng-container matColumnDef="imagen">
+        <th mat-header-cell *matHeaderCellDef>Imagen</th>
+        <td mat-cell *matCellDef="let row">
+          <img [src]="row.producto.imagenUrl" alt="{{row.producto.nombre}}" width="50" height="50">
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
         <td mat-cell *matCellDef="let row"> {{row.producto.nombre}} </td>
       </ng-container>
-      <!-- ID Column -->
+
       <ng-container matColumnDef="cantidad">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
-        <td mat-cell *matCellDef="let row" min="1"> {{row.cantidad}} </td>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="decreaseQuantity(row)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          {{ row.cantidad }}
+          <button mat-icon-button (click)="increaseQuantity(row)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </td>
       </ng-container>
 
-      <!-- Progress Column -->
       <ng-container matColumnDef="precio">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
         <td mat-cell *matCellDef="let row">{{ row.producto.precio * row.cantidad | currency:'$' }}</td>
@@ -72,7 +86,7 @@
 
   <div>
     <h3>Total: {{ calculateTotal() | currency:'$' }}</h3>
-    <button mat-raised-button color="primary" (click)="procesarCompra()">Comprar</button>
+    <button mat-raised-button color="primary" (click)="procesarCompra()" [disabled]="carrito.length==0">Comprar</button>
   </div>
 
   <div *ngIf="isLoading">

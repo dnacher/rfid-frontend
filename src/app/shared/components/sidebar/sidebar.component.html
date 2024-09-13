@@ -11,18 +11,18 @@
 
     <h2 matSubheader>Menu</h2>
 
-    <a mat-list-item routerLinkActive="list-item-active" *ngFor="let item of menuActual" [routerLink]="item.routerLink!" (click)="test(item)">{{ item.tituloMenu }}</a>
+    <a mat-list-item routerLinkActive="list-item-active" *ngFor="let item of menuActual" [routerLink]="item.routerLink!" (click)="clickValue(item)">{{ item.tituloMenu }}</a>
 
     <mat-divider></mat-divider>
 
     <h2 matSubheader>Configuracion</h2>
 
-    <a mat-list-item routerLinkActive="list-item-active" (click)="test(itemConfiguracion)">
+    <a mat-list-item routerLinkActive="list-item-active" (click)="clickValue(itemConfiguracion)">
         <mat-icon>settings</mat-icon>
       {{ itemConfiguracion.tituloMenu }}
     </a>
 
-    <a mat-list-item routerLinkActive="list-item-active" (click)="test(itemSeguridad)">
+    <a mat-list-item routerLinkActive="list-item-active" (click)="clickValue(itemSeguridad)">
         <mat-icon>security</mat-icon>
       {{ itemSeguridad.tituloMenu }}
     </a>

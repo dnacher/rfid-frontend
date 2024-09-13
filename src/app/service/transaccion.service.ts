@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Transaccion} from '../model/Transaccion';
 
@@ -17,6 +17,14 @@ export class TransaccionService {
 
   saveTransaccion(transaccion: Transaccion): Observable<any> {
     return this.http.post(`${this.baseUrl}`, transaccion);
+  }
+
+  cancelTransaccion(uuid: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/cancel/${uuid}`, {});
+  }
+
+  findByUuid(uuid: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/uuid/${uuid}`,{});
   }
 
 }

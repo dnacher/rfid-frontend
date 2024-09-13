@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
     this.apiService = apiService;
   }
 
-  test(value: PaginaItem) {
+  clickValue(value: PaginaItem) {
     if (value.esCarpeta) {
       this.carpetaActual = value.carpeta;
     }
