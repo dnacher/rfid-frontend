@@ -106,7 +106,13 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Cantidad disponible</mat-label>
-    <input matInput [(ngModel)]="libroSelected.cantidadDisponible">
+    <input matInput
+           [(ngModel)]="libroSelected.cantidadDisponible"
+           type="number"
+           min="0" >
+    <mat-error *ngIf="libroSelected.cantidadDisponible < 0">
+      La cantidad debe ser un número positivo.
+    </mat-error>
   </mat-form-field>
 
   <mat-grid-list cols="3" rowHeight="4:1">

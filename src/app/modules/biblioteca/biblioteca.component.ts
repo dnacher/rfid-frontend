@@ -3,16 +3,16 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {LibroService} from '../../service/libro.service';
+import {LibroService} from '../../service/biblioteca/libro.service';
 import {Libro} from '../../model/Libro';
-import {AlumnoService} from '../../service/alumno.service';
+import {AlumnoService} from '../../service/asistencia/alumno.service';
 import {concatMap, EMPTY, from, Observable, switchMap, toArray} from 'rxjs';
 import {Prestamo} from '../../model/Prestamo';
-import {PrestamoService} from '../../service/prestamo.service';
+import {PrestamoService} from '../../service/biblioteca/prestamo.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2'
 import {Curso} from '../../model/Curso';
-import {CursoService} from '../../service/curso.service';
+import {CursoService} from '../../service/biblioteca/curso.service';
 
 @Component({
   selector: 'app-biblioteca',
@@ -169,15 +169,6 @@ export class BibliotecaComponent implements OnInit {
 
   procesar() {
     switch (this.opcion) {
-      case 'Libros no devueltos':
-        this.noDevueltos();
-        break;
-      case 'Historial Alumno':
-        this.historialAlumno();
-        break;
-      case 'Devolucion por fecha':
-        this.devolucionPorFecha();
-        break;
       case 'Devolver Libros':
         this.devolver();
         break;
@@ -188,27 +179,6 @@ export class BibliotecaComponent implements OnInit {
 
   onComboOpcionChange() {
     switch (this.opcion) {
-      case 'Libros no devueltos':
-        this.isdiasSeleccionados = false;
-        this.isFecha = false;
-        this.isTable = false;
-        this.isCurso = false;
-        this.opcionText = 'Ver reporte';
-        break;
-      case 'Historial Alumno':
-        this.isdiasSeleccionados = false;
-        this.isFecha = false;
-        this.isTable = false;
-        this.isCurso = false;
-        this.opcionText = 'Ver reporte';
-        break;
-      case 'Devolucion por fecha':
-        this.isdiasSeleccionados = false;
-        this.isFecha = true;
-        this.isTable = false;
-        this.isCurso = true;
-        this.opcionText = 'Ver reporte';
-        break;
       case 'Devolver Libros':
         this.isdiasSeleccionados = false;
         this.isFecha = false;
@@ -245,105 +215,6 @@ export class BibliotecaComponent implements OnInit {
     } else {
       this.guardarHabilitado = false;
     }
-  }
-
-  devolucionPorFecha() {
-    if (this.fechaInicio && this.fechaFin && this.fechaInicio < this.fechaFin && this.curso) {
-      this.tituloReporte = 'Devoluciones por curso y fecha';
-      const fechaInicioFormatted = this.formatDate(this.fechaInicio);
-      const fechaFinFormatted = this.formatDate(this.fechaFin);
-      this.prestamoService.findPrestamosByFecha(this.curso, fechaInicioFormatted, fechaFinFormatted).subscribe({
-        next: (response: any) => {
-          this.prestamosList = new MatTableDataSource(response.message);
-          this.displayTable = false;
-        },
-        error: (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error,
-          });
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Verificar valores',
-        text: 'Debes elegir fecha inicio, fecha fin y curso.',
-      });
-    }
-  }
-
-  private formatDate(date: Date): string {
-    const d = new Date(date);
-    const month = '' + (d.getMonth() + 1);
-    const day = '' + d.getDate();
-    const year = d.getFullYear();
-
-    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
-  }
-
-  noDevueltos() {
-    this.tituloReporte = 'Libros No Devueltos al dia de hoy';
-    this.prestamoService.getPrestamoNoDevueltos().subscribe({
-      next: (response: any) => {
-        this.prestamosList = new MatTableDataSource(response.message);
-        this.displayTable = false;
-      },
-      error: (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error,
-        });
-      }
-    });
-  }
-
-  historialAlumno() {
-    this.tituloReporte = 'Historial Alumno';
-    this.isLoading = true;
-    this.spinnerService.show();
-    this.libroService.getRFID().pipe(
-      switchMap((response: any) => {
-        const rfid = response.message;
-        // Verifica si el rfid es "c3-37-2f-02"
-        if (rfid === 'c3-37-2f-02') {
-          // Muestra el mensaje de Swal
-          Swal.fire({
-            icon: 'info',
-            title: 'Cambio de Módulo',
-            text: 'Se cambió al módulo de asistencia.',
-          }).then(() => {
-            // Redirige al módulo de asistencia después de mostrar el mensaje
-            window.location.href = 'http://localhost:4200/asistencia';
-          });
-          // Finaliza el observable actual
-          return EMPTY;
-        }
-        // Si no es el rfid especial, continúa con el flujo normal
-        return this.prestamoService.getHistorialByUid(rfid);
-      })
-    ).subscribe(
-      {
-        next: (response: any) => {
-          this.prestamosList = new MatTableDataSource(response.message);
-          this.displayTable = false;
-        },
-        error: (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: error,
-          });
-        },
-        complete: () => {
-          // Finaliza el spinner solo si no se ha redirigido
-          this.isLoading = false;
-          this.spinnerService.hide();
-        }
-      }
-    );
   }
 
   devolver() {

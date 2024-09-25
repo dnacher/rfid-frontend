@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Asistencia} from '../model/Asistencia';
-import {Curso} from '../model/Curso';
+import {environment} from '../../../environments/environment';
+import {Asistencia} from '../../model/Asistencia';
+import {Curso} from '../../model/Curso';
 import {formatDate} from '@angular/common';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AsistenciaService {
   constructor(private http: HttpClient) {
   }
 
-  getAsistenciasByFechaAndCurso(cursoId: Curso, fecha: Date): Observable<any> {
+  getAsistenciasByFechaAndCurso(cursoId: number, fecha: Date): Observable<any> {
     const uri = this.baseUrl + '/curso/' + cursoId + '?fecha=' + fecha.toISOString().split('T')[0];
     console.log(uri);
     return this.http.get(uri);

@@ -8,4 +8,5 @@ export class Curso {
     this.id = id;
     this.nombre = nombre;
   }
+
 }

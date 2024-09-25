@@ -1,0 +1,57 @@
+<mat-toolbar color="primary">
+  <span>{{titulo}}</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+
+<div class="main-body" *ngIf="displayTable">
+
+  <mat-grid-list cols="3" rowHeight="4:1">
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Modulos</mat-label>
+        <mat-select [(ngModel)]="opcion"
+                    (selectionChange)="onComboOpcionChange(opcion)">
+          <mat-option *ngFor="let opciones of ['Asistencia','Biblioteca', 'Cantina', 'Seguridad']" [value]="opciones">
+            {{ opciones }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Tipo de usuario</mat-label>
+        <mat-select [(ngModel)]="tipoUsuarioSelected">
+          <mat-option value="">Ninguno</mat-option>
+          <mat-option *ngFor="let tipoUsuario of tipoUsuarios" [value]="tipoUsuario">
+            {{ tipoUsuario.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-list>
+    <mat-divider></mat-divider>
+    <br><br>
+  </mat-list>
+  <div *ngIf="paginaItemsPorCarpeta[opcion]?.length > 0">
+    <h2>{{ opcion }}</h2>
+    <mat-list>
+      <div *ngFor="let item of paginaItemsPorCarpeta[opcion]">
+        <mat-list-item>{{ item.tituloMenu }}</mat-list-item>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="radio-group"
+          [(ngModel)]="seleccionPermisos[item.id]"
+          (change)="onSeleccionarPermiso(item.id, $event.value)">
+
+          <mat-radio-button *ngFor="let opcion of opciones" [value]="opcion">{{ opcion }}</mat-radio-button>
+        </mat-radio-group>
+        <br>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-list>
+  </div>
+  <button mat-flat-button color="primary"  (click)="guardar()" [disabled]="!puedeGuardar()">{{nombreBoton2}}</button><br><br>
+</div>

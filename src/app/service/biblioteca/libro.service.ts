@@ -1,7 +1,7 @@
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {Libro} from '../model/Libro';
+import {environment} from '../../../environments/environment';
+import {Libro} from '../../model/Libro';
 import {Injectable} from '@angular/core';
 
 @Injectable({

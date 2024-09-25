@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AsistenciaService} from '../../service/asistencia.service';
+import {AsistenciaService} from '../../service/asistencia/asistencia.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {Asistencia} from '../../model/Asistencia';
 import {Curso} from '../../model/Curso';
-import {CursoService} from '../../service/curso.service';
+import {CursoService} from '../../service/biblioteca/curso.service';
 import {MatSort} from '@angular/material/sort';
 
 @Component({

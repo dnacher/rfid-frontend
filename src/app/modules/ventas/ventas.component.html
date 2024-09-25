@@ -11,12 +11,16 @@
           <mat-card-title-group>
             <mat-card-title>{{product.producto.nombre}}</mat-card-title>
             <mat-card-subtitle>{{product.producto.precio | currency:'UYU'}}</mat-card-subtitle>
-            <img mat-card-sm-image src="{{product.producto.imagenUrl}}">
+            <img mat-card-sm-image src="{{product.producto.imagenUrl}}" (click)="addToCart(product)">
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content>
-          <button mat-raised-button color="primary" (click)="addToCart(product)">agregar al carrito</button>
         </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-icon-button color="primary" (click)="addToCart(product)">
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
+        </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
@@ -26,12 +30,6 @@
 <div *ngIf="displayProductos==='CARRITO'">
   <h2>Carrito de compras</h2>
   <button mat-raised-button color="primary" (click)="volver()">volver</button><br>
-
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="filtro($event)" placeholder="Filtro" #input>
-  </mat-form-field>
-
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort>
 
