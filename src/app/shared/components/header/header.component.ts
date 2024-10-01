@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Router} from '@angular/router';
-import {ApiService} from '../../../service/api.service';
+import {ApiService} from '../../../service/seguridad/api.service';
 
 @Component({
   selector: 'app-header',

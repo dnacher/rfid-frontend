@@ -5,7 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import {Inventario} from '../../model/Inventario';
-import {InventarioService} from '../../service/inventario.service';
+import {InventarioService} from '../../service/cantina/inventario.service';
 import {Producto} from '../../model/Producto';
 
 @Component({
@@ -31,7 +31,6 @@ export class ProductoComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
-
 
   constructor(private dialog: MatDialog,
               private inventarioService: InventarioService) {
@@ -61,6 +60,7 @@ export class ProductoComponent implements OnInit {
         this.dataSource = new MatTableDataSource(value.message);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.dataSource.filterPredicate = this.crearFiltroPersonalizado();
       },
       error: console.log,
     });
@@ -75,7 +75,33 @@ export class ProductoComponent implements OnInit {
     }
   }
 
+  crearFiltroPersonalizado(): (data: Inventario, filter: string) => boolean {
+    return (data: Inventario, filter: string): boolean => {
+      const filterValue = filter.trim().toLowerCase();
+
+      // Filtramos en los campos de Inventario y Producto
+      const matchesCantidad = data.cantidad.toString().includes(filterValue);
+      const matchesProductoNombre = data.producto?.nombre?.toLowerCase().includes(filterValue);
+
+      // Si se quiere filtrar por cantidad o nombre del producto
+      return matchesCantidad || matchesProductoNombre;
+    };
+  }
+
   borrar(inventario: Inventario) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el producto?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(inventario);
+      }
+    });
+  }
+
+  procesoBorrar(inventario: Inventario) {
     this.inventarioService.deleteInventario(inventario.id).subscribe({
       next: (response: any) => {
         Swal.fire({
@@ -107,7 +133,7 @@ export class ProductoComponent implements OnInit {
       this.inventarioService.updateInventario(this.inventarioSelected).subscribe({
         next: (response: any) => {
           Swal.fire({
-            title: 'Guardado!',
+            title: 'Actualizado!',
             text: 'Se actualizo el inventario correctamente',
             icon: 'success'
           });
@@ -124,7 +150,6 @@ export class ProductoComponent implements OnInit {
         }
       });
     } else {
-      console.log(this.inventarioSelected);
       this.inventarioService.saveInventario(this.inventarioSelected).subscribe({
         next: (response: any) => {
           Swal.fire({
@@ -145,5 +170,15 @@ export class ProductoComponent implements OnInit {
         }
       });
     }
+  }
+
+  isFormValid(): boolean {
+    const producto = this.inventarioSelected?.producto;
+    const nombre = producto?.nombre?.trim(); // Elimina espacios en blanco para asegurar que no sea solo espacios
+    const precio = producto?.precio;
+    const cantidad = this.inventarioSelected?.cantidad;
+
+    // Verificar que nombre no sea vacío, precio y cantidad no sean negativos o null/undefined
+    return nombre && precio >= 0 && cantidad >= 0;
   }
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Inventario} from '../../model/Inventario';
-import {InventarioService} from '../../service/inventario.service';
+import {InventarioService} from '../../service/cantina/inventario.service';
 import {Router} from '@angular/router';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
@@ -8,11 +8,11 @@ import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {switchMap} from 'rxjs';
-import {LibroService} from '../../service/libro.service';
-import {UsuarioCantinaService} from '../../service/usuario-cantina.service';
+import {LibroService} from '../../service/biblioteca/libro.service';
+import {UsuarioCantinaService} from '../../service/cantina/usuario-cantina.service';
 import {UsuarioCantina} from '../../model/UsuarioCantina';
 import {Transaccion} from '../../model/Transaccion';
-import {TransaccionService} from '../../service/transaccion.service';
+import {TransaccionService} from '../../service/cantina/transaccion.service';
 
 @Component({
   selector: 'app-libro',
@@ -69,12 +69,16 @@ export class VentasComponent implements OnInit {
       producto.cantidad = 1;
       this.carrito.push(producto);
       Swal.fire({
-        title: 'Agregado!',
-        text: 'Se agregó el producto: ' + producto.producto.nombre,
-        icon: 'success'
+        title: 'Ir al carrito?',
+        showDenyButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: `Seguir Comprando`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.irCarrito();
+        }
       });
     }
-
     console.log(this.carrito); // Para verificar el estado del carrito
   }
 
@@ -161,6 +165,8 @@ export class VentasComponent implements OnInit {
             title: 'Error',
             text: 'No existe Usuario',
           });
+          this.isLoading = false;
+          this.spinnerService.hide();
         }
       },
       error: (error) => {

@@ -12,8 +12,7 @@
         <mat-label>Opcion</mat-label>
         <mat-select [(ngModel)]="opcion"
                     (selectionChange)="onComboOpcionChange()">
-          <mat-option *ngFor="let opciones of ['Prestamo Libros', 'Devolver Libros', 'Libros no devueltos',
-                                               'Historial Alumno', 'Devolucion por fecha']" [value]="opciones">
+          <mat-option *ngFor="let opciones of ['Prestamo Libros', 'Devolver Libros']" [value]="opciones">
             {{ opciones }}
           </mat-option>
         </mat-select>
@@ -57,18 +56,6 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-      </mat-grid-tile>
-    </div>
-
-    <div *ngIf="isCurso">
-      <mat-grid-tile>
-        <mat-form-field>
-          <mat-label>Seleccionar curso</mat-label>
-          <mat-select [(ngModel)]="curso">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let curso of cursos" [value]="curso.id">{{ curso.nombre }}</mat-option>
-          </mat-select>
-        </mat-form-field>
       </mat-grid-tile>
     </div>
 

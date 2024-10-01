@@ -9,6 +9,7 @@ export class Transaccion {
   total: number;
   fecha: Date;
   estadoTransaccion: EstadoTransaccion;
+  uuid: string;
 
 
   constructor(id: number, usuarioCantina: UsuarioCantina, lineasTransacciones: LineaTransaccion[], total: number, fecha: Date

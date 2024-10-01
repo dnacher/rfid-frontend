@@ -8,7 +8,6 @@
     <button mat-flat-button color="primary"  (click)="agregarInventario()">Agregar Inventario</button><br><br>
 
     <mat-form-field>
-      <mat-label>Filter</mat-label>
       <input matInput (keyup)="filtro($event)" placeholder="Filtro" #input>
     </mat-form-field>
 
@@ -65,11 +64,21 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Precio</mat-label>
-    <input matInput [(ngModel)]="inventarioSelected.producto.precio">
+    <input matInput [(ngModel)]="inventarioSelected.producto.precio"
+           type="number"
+           min="0" >
+    <mat-error *ngIf="inventarioSelected.producto.precio < 0">
+      El precio debe ser un número positivo.
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Cantidad</mat-label>
-    <input matInput [(ngModel)]="inventarioSelected.cantidad">
+    <input matInput [(ngModel)]="inventarioSelected.cantidad"
+           type="number"
+           min="0" >
+    <mat-error *ngIf="inventarioSelected.cantidad < 0">
+      La cantidad debe ser un número positivo.
+    </mat-error>
   </mat-form-field>
 
   <mat-grid-list cols="3" rowHeight="4:1">
@@ -77,7 +86,7 @@
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile>
-      <button mat-flat-button color="primary"  (click)="guardar()">{{nombreBoton}}</button><br><br>
+      <button mat-flat-button color="primary"  (click)="guardar()" [disabled]="!isFormValid()">{{nombreBoton}}</button><br><br>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

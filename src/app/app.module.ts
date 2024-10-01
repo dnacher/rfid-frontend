@@ -28,7 +28,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {IndexComponent} from './modules/index/index.component';
@@ -36,6 +35,18 @@ import {LibroComponent} from './modules/libro/libro.component';
 import {ProductoComponent} from './modules/producto/producto.component';
 import {UsuarioCantinaComponent} from './modules/usuarioCantina/usuario-cantina.component';
 import {VentasComponent} from './modules/ventas/ventas.component';
+import {LoginComponent} from './modules/login/login.component';
+import {PermisoComponent} from './modules/permisoUsuario/permiso.component';
+import {MatListModule} from '@angular/material/list';
+import {AlumnoComponent} from './modules/alumno/alumno.component';
+import {CursoComponent} from './modules/curso/curso.component';
+import {TipoUsuarioComponent} from './modules/tipoUsuario/tipo-usuario.component';
+import {AsignarRFIDComponent} from './modules/asignarRFID/asignar-r-f-i-d.component';
+import {ReAsignarRFIDComponent} from './modules/reAsignarRFID/re-asignar-r-f-i-d.component';
+import {UsuarioComponent} from './modules/usuario/usuario.component';
+import {PasarClaseComponent} from './modules/pasarClase/pasar-clase.component';
+import {BibliotecaReporteComponent} from './modules/biblioteca-reporte/biblioteca-reporte.component';
+import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 
 @NgModule({
   declarations: [
@@ -44,38 +55,49 @@ import {VentasComponent} from './modules/ventas/ventas.component';
     AsistenciasComponent,
     NoasistenComponent,
     BibliotecaComponent,
+    BibliotecaReporteComponent,
     LibroComponent,
     ProductoComponent,
     UsuarioCantinaComponent,
     VentasComponent,
+    LoginComponent,
+    PermisoComponent,
+    AlumnoComponent,
+    CursoComponent,
+    TipoUsuarioComponent,
+    AsignarRFIDComponent,
+    ReAsignarRFIDComponent,
+    UsuarioComponent,
+    PasarClaseComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        DefaultModule,
-        MatCardModule,
-        FormsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatRadioModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSnackBarModule,
-        MatGridListModule,
-        MatCheckboxModule,
-        NgxSpinnerModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    DefaultModule,
+    MatCardModule,
+    FormsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSnackBarModule,
+    MatGridListModule,
+    MatCheckboxModule,
+    NgxSpinnerModule,
+    MatListModule,
+  ],
   exports: [
 
   ],

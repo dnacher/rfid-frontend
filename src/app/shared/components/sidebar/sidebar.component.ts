@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../service/api.service';
+import {Component, OnInit} from '@angular/core';
+import {ApiService} from '../../../service/seguridad/api.service';
+import {PaginaItem} from '../../../model/PaginaItem';
+import {PermisoUsuarioService} from '../../../service/seguridad/permisoUsuario.service';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {CambiarUsuarioService} from '../../../service/seguridad/cambiar.usuario.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,94 +14,151 @@ import {ApiService} from '../../../service/api.service';
 export class SidebarComponent implements OnInit {
   public apiService: ApiService;
 
-  public menuPrincipal;
-  public menuSeguridad;
-  public menuConfiguracion;
-  public menuEstados;
+  public menuPrincipal = [];
+  public menuAsistencia = [];
+  public menuBiblioteca = [];
+  public menuCantina = [];
+  public menuSeguridad = [];
+  public menuConfiguracion = [];
+  public listaItems: PaginaItem[] = [];
+  private usuarioSub: Subscription;
   userImage = 'assets/user.png';
+  public tienePermisoSeguridad = false;
+  public verMenu = false;
 
-  public itemConfiguracion = new PaginaItem('Configuración', null, 'Configuracion', true);
-  public itemSeguridad = new PaginaItem('Seguridad', null, 'Seguridad', true);
+  public itemConfiguracion = new PaginaItem(null, null, 'Configuración', null, 'Configuracion', true);
+  public itemSeguridad = new PaginaItem(null, null, 'Seguridad', null, 'Seguridad', true);
 
   public menuActual;
   public carpetaActual = 'Principal';
 
-  constructor(apiService: ApiService) {
+  constructor(apiService: ApiService,
+              private permisoUsaurioService: PermisoUsuarioService,
+              private router: Router,
+              private cambiarUsuarioService: CambiarUsuarioService) {
     this.apiService = apiService;
+  }
+
+  limpiarListas() {
+    this.menuPrincipal = [];
+    this.menuAsistencia = [];
+    this.menuBiblioteca = [];
+    this.menuCantina = [];
+    this.menuSeguridad = [];
+    this.menuConfiguracion = [];
+    this.listaItems = [];
+  }
+
+  ngOnInit() {
+    this.usuarioSub = this.cambiarUsuarioService.usuario$.subscribe(tipoUsuario => {
+      if (tipoUsuario) {
+        this.limpiarListas();
+        this.cargarListaXTipoUsuario(tipoUsuario);
+        this.verMenu = true;
+      } else {
+        this.verMenu = false;
+      }
+    });
+
+    const tipoUsuarioId = localStorage.getItem('tipoUsuarioId');
+    if (tipoUsuarioId) {
+      this.limpiarListas();
+      this.cargarListaXTipoUsuario(tipoUsuarioId);
+      this.verMenu = true;
+    } else {
+      this.verMenu = false;
+    }
+  }
+
+  cargarListaXTipoUsuario(tipoUsuarioId: string) {
+    this.permisoUsaurioService.getPaginaItemsByTipoUsuarioId(tipoUsuarioId).subscribe({
+      next: (res) => {
+        this.listaItems = res.message;
+        this.verificarPermisoSeguridad();
+        this.clasificarItems();
+        this.menuActual = this.menuPrincipal;
+      },
+      error: console.log,
+    });
   }
 
   clickValue(value: PaginaItem) {
     if (value.esCarpeta) {
       this.carpetaActual = value.carpeta;
+      if (value.tituloMenu === 'Inicio') {
+        this.router.navigate([value.routerLink]);
+      }
+      this.actualizarCarpeta();
+    } else {
+      this.router.navigate([value.routerLink]);
     }
+  }
+
+  actualizarCarpeta() {
     switch (this.carpetaActual) {
       case 'Principal':
-        console.log('menu Principal');
         this.menuActual = this.menuPrincipal;
         break;
       case 'Seguridad':
-        console.log('menu Seguridad');
         this.menuActual = this.menuSeguridad;
         break;
       case 'Configuracion':
         this.menuActual = this.menuConfiguracion;
         break;
-      case 'Estado':
-        this.menuActual = this.menuEstados;
+      case 'Asistencia':
+        this.menuActual = this.menuAsistencia;
+        break;
+      case 'Biblioteca':
+        this.menuActual = this.menuBiblioteca;
+        break;
+      case 'Cantina':
+        this.menuActual = this.menuCantina;
         break;
     }
-
   }
 
-  ngOnInit() {
-    this.menuPrincipal = [
-      new PaginaItem('Inicio', '/', 'Principal', true),
-      new PaginaItem('Asistencia', '/asistencia', 'Principal', false),
-      new PaginaItem('No Asistieron', '/no-asisten', 'Principal', false),
-      new PaginaItem('Biblioteca','/biblioteca', 'Principal', false),
-      new PaginaItem('Libros','/libro', 'Principal', false),
-      new PaginaItem('Productos','/producto', 'Principal', false),
-      new PaginaItem('Usuario Cantina','/usuario-cantina', 'Principal', false),
-      new PaginaItem('Ventas','/ventas', 'Principal', false),
-    ];
-    this.menuSeguridad = [
-      new PaginaItem('Inicio', '/', 'Principal', true),
-      new PaginaItem('Usuario', '/usuario', '', false),
-      new PaginaItem('Tipo de Usuario', '/tipo-usuario', '', false),
-      new PaginaItem('Permisos', '/permisos', '', false),
-    ];
-    this.menuConfiguracion = [
-      new PaginaItem('Inicio', '/', 'Principal', true),
-      new PaginaItem('Banco', '/bancos', '', false),
-      new PaginaItem('Compañias', '/companias', '', false),
-      new PaginaItem('Cotizacion Vendedores', '/cotizacion-vendedores', '', false),
-      new PaginaItem('Estados', '', 'Estado', true),
-      new PaginaItem('Forma de pago', '/forma-pago', '', false),
-      new PaginaItem('Moneda', '/moneda', '', false),
-      new PaginaItem('Productos', '/producto', '', false),
-      new PaginaItem('Tipo Productos', '/tipo-producto', '', false),
-      new PaginaItem('Vendedores', '/vendedor', '', false),
-    ];
-    this.menuEstados = [
-      new PaginaItem('Inicio', '/dashboard', 'Principal', true),
-      new PaginaItem('Estado Siniestro', '/estado-siniestro', '', false),
-      new PaginaItem('Estado Poliza', '/estado-poliza', '', false),
-    ];
-    this.menuActual = this.menuPrincipal;
+  agregarInicioSiNoVacio(lista: PaginaItem[], paginaItem: PaginaItem) {
+    if (lista.length > 0) {
+      lista.unshift(paginaItem);
+    }
   }
 
-}
+  clasificarItems() {
+    const paginaInicio = this.listaItems.find(item => item.id === 1);
+    // Divide los elementos por carpeta
+    this.listaItems.forEach(item => {
+      switch (item.paginaOrigen) {
+        case 'menuPrincipal':
+          this.menuPrincipal.push(item);
+          break;
+        case 'menuAsistencia':
+          this.menuAsistencia.push(item);
+          break;
+        case 'menuBiblioteca':
+          this.menuBiblioteca.push(item);
+          break;
+        case 'menuCantina':
+          this.menuCantina.push(item);
+          break;
+        case 'menuSeguridad':
+          this.menuSeguridad.push(item);
+          this.tienePermisoSeguridad = true;
+          break;
+        case 'menuConfiguracion':
+          this.menuConfiguracion.push(item);
+          break;
+      }
+    });
+    // Agregar el item "Inicio" si la lista tiene al menos un elemento
+    this.agregarInicioSiNoVacio(this.menuPrincipal, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuAsistencia, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuBiblioteca, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuCantina, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuSeguridad, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuConfiguracion, paginaInicio);
+  }
 
-class PaginaItem {
-  tituloMenu: string;
-  routerLink: string;
-  carpeta: string;
-  esCarpeta: boolean;
-
-  constructor(tituloMenu: string, routerLink: string, carpeta: string, esCarpeta: boolean) {
-    this.tituloMenu = tituloMenu;
-    this.routerLink = routerLink;
-    this.carpeta = carpeta;
-    this.esCarpeta = esCarpeta;
+  verificarPermisoSeguridad() {
+    this.tienePermisoSeguridad = this.listaItems.some(item => item.carpeta === 'Seguridad');
   }
 }

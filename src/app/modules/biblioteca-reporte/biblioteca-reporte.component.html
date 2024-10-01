@@ -1,0 +1,170 @@
+<mat-toolbar color="primary">
+  <span>{{titulo}}</span>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+
+<div class="main-body" *ngIf="displayTable">
+
+  <mat-grid-list cols="3" rowHeight="4:1">
+
+    <mat-grid-tile>
+      <mat-form-field class="example-full-width">
+        <mat-label>Opcion</mat-label>
+        <mat-select [(ngModel)]="opcion"
+                    (selectionChange)="onComboOpcionChange()">
+          <mat-option *ngFor="let opciones of ['Libros no devueltos','Historial Alumno', 'Devolucion por fecha']" [value]="opciones">
+            {{ opciones }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-raised-button color="primary" (click)="procesar()">{{opcionText}}</button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <!-- Primer Datepicker -->
+    <div *ngIf="isFecha">
+      <mat-grid-tile>
+        <mat-form-field class="example-full-width">
+          <mat-label>Elegir fecha inicio</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="fechaInicio" (dateChange)="verificarGuardarHabilitado()"
+                 [value]="fechaInicio">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker1">
+            <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <!-- Segundo Datepicker -->
+      <mat-grid-tile>
+        <mat-form-field class="example-full-width">
+          <mat-label>Elegir fecha fin</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="fechaFin" [disabled]="checkboxHabilitado"
+                 [value]="fechaFin" (dateChange)="verificarGuardarHabilitado()">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2">
+            <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+      </mat-grid-tile>
+    </div>
+
+    <div *ngIf="isCurso">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Seleccionar curso</mat-label>
+          <mat-select [(ngModel)]="curso">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let curso of cursos" [value]="curso.id">{{ curso.nombre }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </div>
+
+    <!-- Combo Box -->
+    <div *ngIf="isdiasSeleccionados">
+      <mat-grid-tile>
+        <mat-form-field class="example-full-width" >
+          <mat-label>Seleccionar días</mat-label>
+          <mat-select [(ngModel)]="diasSeleccionados" [disabled]="!checkboxHabilitado"
+                      (selectionChange)="onComboChange()">
+            <mat-option *ngFor="let dias of [7, 14, 30]" [value]="dias">
+              {{ dias }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+      </mat-grid-tile>
+
+      <!-- Checkbox -->
+      <mat-grid-tile>
+        <mat-checkbox class="example-margin" [(ngModel)]="checkboxHabilitado" (change)="onCheckboxChange()">
+          Seleccionar dias
+        </mat-checkbox>
+      </mat-grid-tile>
+    </div>
+
+  </mat-grid-list>
+
+  <!--Spinner-->
+  <div *ngIf="isLoading">
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
+      <p style="color: white"> Pase la tarjeta para autenticar </p>
+    </ngx-spinner>
+  </div>
+  <!--End of Spinner-->
+</div>
+
+<div class="main-body" *ngIf="!displayTable">
+  <span><h2>{{tituloReporte}}</h2></span><br>
+  <button mat-raised-button color="primary" (click)="displayLibros()">Volver</button><br><br>
+
+  <table mat-table [dataSource]="prestamosList" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id</th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+    <!-- ID Column -->
+    <ng-container matColumnDef="fechaPrestamo">
+      <th mat-header-cell *matHeaderCellDef> Fecha Prestamo</th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaPrestamo}} </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="fechaDevolucion">
+      <th mat-header-cell *matHeaderCellDef> Fecha Devolucion </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaDevolucion}}</td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="fechaDevolucionReal">
+      <th mat-header-cell *matHeaderCellDef> Fecha Devolucion Real</th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaDevolucionReal}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="devuelto">
+      <th mat-header-cell *matHeaderCellDef> Devuelto</th>
+      <td mat-cell *matCellDef="let row" style="text-align: center;">
+    <span
+      class="circulo"
+      [ngClass]="{
+        'circulo-verde': row.devuelto,
+        'circulo-amarillo': !row.devuelto && isWithinDueDate(row.fechaDevolucion),
+        'circulo-rojo': !row.devuelto && !isWithinDueDate(row.fechaDevolucion)
+      }" style="display: inline-block; vertical-align: middle;">
+    </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="alumno">
+      <th mat-header-cell *matHeaderCellDef> Alumno </th>
+      <td mat-cell *matCellDef="let row"> {{row.alumno.nombre}} {{row.alumno.apellido}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="libro">
+      <th mat-header-cell *matHeaderCellDef> Libro </th>
+      <td mat-cell *matCellDef="let row"> {{row.libro.titulo}}</td>
+    </ng-container>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No se encontraron datos</td>
+    </tr>
+
+    <tr mat-header-row *matHeaderRowDef="displayedPrestamo"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedPrestamo;"></tr>
+
+  </table>
+</div>

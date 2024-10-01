@@ -1,17 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {LibroService} from '../../service/libro.service';
+import {LibroService} from '../../service/biblioteca/libro.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
-import {Inventario} from '../../model/Inventario';
 import {switchMap} from 'rxjs';
-import {UsuarioCantinaService} from '../../service/usuario-cantina.service';
+import {UsuarioCantinaService} from '../../service/cantina/usuario-cantina.service';
 import {HistorialUsuarioCantina} from '../../model/HistorialUsuarioCantina';
-import {HistorialService} from '../../service/historial.service';
-import {TransaccionService} from '../../service/transaccion.service';
+import {HistorialService} from '../../service/cantina/historial.service';
+import {TransaccionService} from '../../service/cantina/transaccion.service';
+import {Transaccion} from '../../model/Transaccion';
 
 @Component({
   selector: 'app-libro',
@@ -20,7 +20,7 @@ import {TransaccionService} from '../../service/transaccion.service';
 })
 export class UsuarioCantinaComponent implements OnInit {
 
-  titulo = 'Inventario';
+  titulo = 'Usuario Cantina';
   displayedColumns: string[] = [
     'id',
     'nombre',
@@ -28,23 +28,33 @@ export class UsuarioCantinaComponent implements OnInit {
     'saldo',
     'tipoOperacion',
     'fecha',
-    'observaciones',
+    'observaciones'
+  ];
+
+  displayedTransacciones: string[] = [
+    'id',
+    'nombre',
+    'apellido',
+    'total',
+    'fecha',
+    'estadoTransaccion',
     'acciones'
   ];
   saldoForm = false;
   saldo = 0;
   observaciones = '';
-  displayTable = true;
+  displayTable = 'INICIO';
   dataSource!: MatTableDataSource<HistorialUsuarioCantina>;
+  dataSourceTransaccion!: MatTableDataSource<Transaccion>;
   isLoading = false;
   nombreBoton = 'Guardar';
   fechaInicio: Date;
   fechaFin: Date;
   fechaHabilitado = false;
   historialList: HistorialUsuarioCantina[];
+
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
-
 
   constructor(private dialog: MatDialog,
               private libroService: LibroService,
@@ -57,13 +67,25 @@ export class UsuarioCantinaComponent implements OnInit {
   ngOnInit() {
   }
 
+  checkValue(value): boolean {
+    return value === this.displayTable;
+  }
+
   volver() {
-    this.displayTable = true;
+    this.displayTable = 'INICIO';
   }
 
   agregarInventario() {
     this.nombreBoton = 'Guardar';
-    this.displayTable = false;
+    this.displayTable = 'HISTORIAL';
+  }
+
+  getHistorial() {
+    this.displayTable = 'HISTORIAL';
+  }
+
+  getTransacciones() {
+    this.displayTable = 'TRANSACCION';
   }
 
   filtro(event: Event) {
@@ -249,15 +271,61 @@ export class UsuarioCantinaComponent implements OnInit {
     });
   }
 
+  procesarReporteTransaccion() {
+    this.isLoading = true;
+    this.spinnerService.show();
+
+    this.libroService.getRFID().pipe(
+      switchMap((response) => {
+        const rfid = response.message;
+        if (!rfid) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'RFID no válido o no encontrado',
+          });
+          throw new Error('RFID no válido o no encontrado');
+        }
+        console.log(rfid);
+        if (this.fechaHabilitado) {
+          const fechaInicioFormatted = this.formatDate(this.fechaInicio);
+          const fechaFinFormatted = this.formatDate(this.fechaFin);
+          return this.transaccionService.findByUsuarioCantinaAlumnoUidCardByFechas(rfid, fechaInicioFormatted, fechaFinFormatted);
+        } else {
+          return this.transaccionService.findByUidCard(rfid);
+        }
+
+      })
+    ).subscribe({
+      next: (response) => {
+        console.log(response.message);
+        this.isLoading = false;
+        this.spinnerService.hide();
+        this.historialList = response.message;
+        this.dataSourceTransaccion = new MatTableDataSource(response.message);
+        this.dataSourceTransaccion.sort = this.sort;
+        this.dataSourceTransaccion.paginator = this.paginator;
+      },
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error?.message || 'Ocurrió un error inesperado',
+        });
+        this.isLoading = false;
+        this.spinnerService.hide();
+      }
+    });
+  }
+
   getReporte(rfid) {
-    this.historialService
-      .findByUsuarioCantinaAlumnoUidCard(rfid)
+    this.transaccionService.findByUidCard(rfid)
       .subscribe({
         next: (response) => {
           this.historialList = response.message;
-          this.dataSource = new MatTableDataSource(response.message);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
+          this.dataSourceTransaccion = new MatTableDataSource(response.message);
+          this.dataSourceTransaccion.sort = this.sort;
+          this.dataSourceTransaccion.paginator = this.paginator;
         },
         error: (error) => {
           Swal.fire({
@@ -278,7 +346,7 @@ export class UsuarioCantinaComponent implements OnInit {
     return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
   }
 
-  cancelar(row: HistorialUsuarioCantina) {
+  cancelar(row: Transaccion) {
     Swal.fire({
       title: 'Realmente queres cancelar la compra?',
       showDenyButton: true,
@@ -293,21 +361,25 @@ export class UsuarioCantinaComponent implements OnInit {
     });
   }
 
-  isGasto(row) {
-    return row === 'GASTO';
+  isProcesado(row) {
+    return row === 'PROCESADO';
   }
 
-  cancelarProceso(row: HistorialUsuarioCantina) {
+  cancelarProceso(row: Transaccion) {
     this.isLoading = true;
     this.spinnerService.show();
+    console.log(row);
 
-    return this.transaccionService.cancelTransaccion(row.observaciones).subscribe({
-      next: (response) => {
-        console.log(response);
-        console.log(row.usuarioCantina.alumno.uidCard);
+    return this.transaccionService.cancelTransaccion(row.uuid).subscribe({
+      next: () => {
         this.isLoading = false;
         this.spinnerService.hide();
         this.getReporte(row.usuarioCantina.alumno.uidCard);
+        Swal.fire({
+          title: 'Cancelado',
+          text: 'Se cancelo correctamente',
+          icon: 'success'
+        });
       },
       error: (error) => {
         Swal.fire({
@@ -321,13 +393,7 @@ export class UsuarioCantinaComponent implements OnInit {
     });
   }
 
-
   cargarTarjeta() {
     this.saldoForm = true;
   }
-
-  getHistorial() {
-    this.displayTable = false;
-  }
-
 }

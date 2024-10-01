@@ -3,6 +3,7 @@
 }
 
 .main-body {
+  scroll-behavior: smooth;
   padding-top: 20px;
   margin: 0 auto;
   max-width: 1348px;
@@ -20,25 +21,6 @@ table {
   width: 100%;
 }
 
-.circulo {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.circulo-verde {
-  background-color: #bdecb6;
-}
-
-.circulo-amarillo {
-  background-color: #f6dc69;
-}
-
-.circulo-rojo {
-  background-color: #c81d11;
-}
-
 .center-container {
   display: flex;
   justify-content: center;
@@ -46,3 +28,45 @@ table {
   height: 100vh; /* Hace que el contenedor ocupe toda la altura de la página */
 }
 
+.custom-grid {
+  width: 80%; /* Asegura que el grid ocupe todo el ancho disponible */
+  height: auto; /* Permite que la altura se ajuste */
+}
+
+mat-grid-tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.button-custom {
+  width: 80%; /* Hace que los botones ocupen todo el ancho disponible */
+  height: 80%; /* Hace que los botones ocupen todo el alto disponible */
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la pantalla */
+}
+
+/* Asegura que el botón ocupe toda la celda */
+/* Mantiene el tamaño del botón */
+button.button-custom {
+  width: 100%;
+  height: 100%;
+  font-size: 24px; /* Tamaño del texto */
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center; /* Centra verticalmente el contenido */
+  line-height: 1; /* Previene el corte del contenido */
+  text-transform: none; /* Mantiene el texto en su forma original */
+}
+
+/* Ajusta el tamaño del ícono */
+button.button-custom mat-icon.icon-custom {
+  //font-size: 36px; /* Aumenta el tamaño del ícono */
+  margin-right: 10px; /* Espacio entre el ícono y el texto */
+  vertical-align: middle; /* Asegura que el ícono esté alineado correctamente */
+}

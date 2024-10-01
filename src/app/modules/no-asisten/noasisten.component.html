@@ -33,15 +33,11 @@
     <mat-grid-tile>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button mat-stroked-button (click)="mostrar()" [disabled]="!curso || !fecha">
+      <button mat-stroked-button color="primary" (click)="mostrar()" [disabled]="!curso || !fecha">
         {{botonMostrar}}
       </button>
     </mat-grid-tile>
-    <mat-grid-tile>
-      <button mat-stroked-button (click)="exportToExcel()" [disabled]="!dataSource">
-        Exportar a Excel
-      </button>
-    </mat-grid-tile>
+
   </mat-grid-list>
 
   <mat-form-field>

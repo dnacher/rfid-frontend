@@ -42,6 +42,15 @@
   justify-content: center; /* Centra el grid en la página */
 }
 
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-content mat-card-title-group {
+  flex: 1;
+}
+
 
 
 

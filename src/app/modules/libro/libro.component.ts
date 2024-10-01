@@ -3,9 +3,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {LibroService} from '../../service/libro.service';
+import {LibroService} from '../../service/biblioteca/libro.service';
 import {Libro} from '../../model/Libro';
-import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -31,14 +30,14 @@ export class LibroComponent implements OnInit {
   libroSelected: Libro;
   isLoading = false;
   nombreBoton = 'Guardar';
+  cantidadNoValida;
 
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
 
 
   constructor(private dialog: MatDialog,
-              private libroService: LibroService,
-              private spinnerService: NgxSpinnerService) {
+              private libroService: LibroService) {
   }
 
   ngOnInit() {
@@ -78,6 +77,19 @@ export class LibroComponent implements OnInit {
   }
 
   borrar(libro: Libro) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el libro?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(libro);
+      }
+    });
+  }
+
+  procesoBorrar(libro: Libro) {
     this.libroService.deleteLibro(libro.id).subscribe({
       next: (response: any) => {
         Swal.fire({
@@ -109,7 +121,7 @@ export class LibroComponent implements OnInit {
       this.libroService.updateLibro(this.libroSelected).subscribe({
         next: (response: any) => {
           Swal.fire({
-            title: 'Guardado!',
+            title: 'Actualizado!',
             text: 'Se actualizo el libro correctamente',
             icon: 'success'
           });

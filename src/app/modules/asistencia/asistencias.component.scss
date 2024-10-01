@@ -19,3 +19,16 @@
 table {
   width: 100%;
 }
+
+.boton-verde {
+  background-color: #4CAF50; /* Color verde */
+  color: white; /* Color del texto */
+}
+
+.boton-verde:hover {
+  background-color: #45A049; /* Color al pasar el cursor */
+}
+
+.boton-verde:disabled {
+  background-color: whitesmoke;
+}
