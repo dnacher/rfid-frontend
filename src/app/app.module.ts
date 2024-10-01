@@ -28,7 +28,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {IndexComponent} from './modules/index/index.component';
@@ -47,6 +46,7 @@ import {ReAsignarRFIDComponent} from './modules/reAsignarRFID/re-asignar-r-f-i-d
 import {UsuarioComponent} from './modules/usuario/usuario.component';
 import {PasarClaseComponent} from './modules/pasarClase/pasar-clase.component';
 import {BibliotecaReporteComponent} from './modules/biblioteca-reporte/biblioteca-reporte.component';
+import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 
 @NgModule({
   declarations: [

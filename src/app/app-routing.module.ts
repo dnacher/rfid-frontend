@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {DefaultComponent} from './layouts/default/default.component';
 import {AsistenciasComponent} from './modules/asistencia/asistencias.component';
 import {NoasistenComponent} from './modules/no-asisten/noasisten.component';
-import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 import {IndexComponent} from './modules/index/index.component';
 import {LibroComponent} from './modules/libro/libro.component';
 import {ProductoComponent} from './modules/producto/producto.component';
@@ -20,6 +19,7 @@ import {ReAsignarRFIDComponent} from './modules/reAsignarRFID/re-asignar-r-f-i-d
 import {UsuarioComponent} from './modules/usuario/usuario.component';
 import {PasarClaseComponent} from './modules/pasarClase/pasar-clase.component';
 import {BibliotecaReporteComponent} from './modules/biblioteca-reporte/biblioteca-reporte.component';
+import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 
 const routes: Routes = [{
   path: '',
@@ -44,7 +44,7 @@ const routes: Routes = [{
       canActivate: [AuthGuard],
     },
     {
-      path: 'biblioteca',
+      path: 'biblioteca-bib',
       component: BibliotecaComponent,
       canActivate: [AuthGuard],
     },

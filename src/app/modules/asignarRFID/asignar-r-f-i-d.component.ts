@@ -47,8 +47,7 @@ export class AsignarRFIDComponent implements OnInit {
               private alumnoService: AlumnoService,
               private cursoService: CursoService,
               private libroService: LibroService,
-              private spinnerService: NgxSpinnerService,
-              private cdr: ChangeDetectorRef) {
+              private spinnerService: NgxSpinnerService) {
   }
 
   ngOnInit() {
@@ -98,6 +97,19 @@ export class AsignarRFIDComponent implements OnInit {
   }
 
   borrar(alumno: Alumno) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el alumno?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(alumno);
+      }
+    });
+  }
+
+  procesoBorrar(alumno: Alumno) {
     this.alumnoService.deleteAlumno(alumno.id).subscribe({
       next: (response: any) => {
         Swal.fire({

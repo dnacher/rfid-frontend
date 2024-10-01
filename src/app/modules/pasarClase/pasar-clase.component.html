@@ -96,7 +96,7 @@
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile>
-      <button mat-flat-button color="primary"  (click)="guardar()">{{nombreBoton}}</button><br><br>
+      <button mat-flat-button color="primary"  (click)="guardar()" [disabled]="selectedAlumnos.length==0">{{nombreBoton}}</button><br><br>
     </mat-grid-tile>
   </mat-grid-list>
 </div>

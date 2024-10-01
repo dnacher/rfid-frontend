@@ -3,7 +3,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import {Alumno} from '../../model/Alumno';
 import {AlumnoService} from '../../service/asistencia/alumno.service';
@@ -41,8 +40,7 @@ export class AlumnoComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
               private alumnoService: AlumnoService,
-              private cursoService: CursoService,
-              private spinnerService: NgxSpinnerService) {
+              private cursoService: CursoService) {
   }
 
   ngOnInit() {
@@ -92,6 +90,19 @@ export class AlumnoComponent implements OnInit {
   }
 
   borrar(alumno: Alumno) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el alumno?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(alumno);
+      }
+    });
+  }
+
+  procesoBorrar(alumno: Alumno) {
     this.alumnoService.deleteAlumno(alumno.id).subscribe({
       next: (response: any) => {
         Swal.fire({
@@ -128,8 +139,8 @@ export class AlumnoComponent implements OnInit {
       this.alumnoService.updateAlumno(this.alumnoSelected).subscribe({
         next: (response: any) => {
           Swal.fire({
-            title: 'Guardado!',
-            text: 'Se actualizo el libro correctamente',
+            title: 'Actualizado!',
+            text: 'Se actualizo el alumno correctamente',
             icon: 'success'
           });
           this.alumnoSelected = new Alumno();
@@ -157,7 +168,7 @@ export class AlumnoComponent implements OnInit {
           } else {
             Swal.fire({
               title: 'Guardado!',
-              text: 'Se guardo el libro correctamente',
+              text: 'Se guardo el alumno correctamente',
               icon: 'success'
             });
             this.alumnoSelected = new Alumno();

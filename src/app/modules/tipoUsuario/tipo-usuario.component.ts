@@ -3,12 +3,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {LibroService} from '../../service/biblioteca/libro.service';
-import {Libro} from '../../model/Libro';
-import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
-import {Curso} from '../../model/Curso';
-import {CursoService} from '../../service/biblioteca/curso.service';
 import {TipoUsuario} from '../../model/TipoUsuario';
 import {TipoUsuarioService} from '../../service/seguridad/tipoUsuario.service';
 
@@ -38,8 +33,7 @@ export class TipoUsuarioComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog,
-              private tipoUsuarioService: TipoUsuarioService,
-              private spinnerService: NgxSpinnerService) {
+              private tipoUsuarioService: TipoUsuarioService) {
   }
 
   ngOnInit() {
@@ -78,8 +72,21 @@ export class TipoUsuarioComponent implements OnInit {
     }
   }
 
-  borrar(curso: Curso) {
-    this.tipoUsuarioService.deleteTipoUsuarioById(curso.id).subscribe({
+  borrar(tipoUsuario: TipoUsuario) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el tipo de usuario?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(tipoUsuario);
+      }
+    });
+  }
+
+  procesoBorrar(tipoUsuario: TipoUsuario) {
+    this.tipoUsuarioService.deleteTipoUsuarioById(tipoUsuario.id).subscribe({
       next: (response: any) => {
         Swal.fire({
           title: 'Eliminado!',
@@ -108,10 +115,10 @@ export class TipoUsuarioComponent implements OnInit {
   guardar() {
     if (this.tipoUsuarioSelected.id) {
       this.tipoUsuarioService.updateTipoUsuario(this.tipoUsuarioSelected).subscribe({
-        next: (response: any) => {
+        next: () => {
           Swal.fire({
             title: 'Guardado!',
-            text: 'Se actualizo el libro correctamente',
+            text: 'Se actualizo el tipo de usuario correctamente',
             icon: 'success'
           });
           this.tipoUsuarioSelected = new TipoUsuario();
@@ -127,12 +134,11 @@ export class TipoUsuarioComponent implements OnInit {
         }
       });
     } else {
-      console.log(this.tipoUsuarioSelected);
       this.tipoUsuarioService.saveTipoUsuario(this.tipoUsuarioSelected).subscribe({
-        next: (response: any) => {
+        next: () => {
           Swal.fire({
             title: 'Guardado!',
-            text: 'Se guardo el libro correctamente',
+            text: 'Se guardo el tipo de usuario correctamente',
             icon: 'success'
           });
           this.tipoUsuarioSelected = new TipoUsuario();

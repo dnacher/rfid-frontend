@@ -89,6 +89,19 @@ export class ProductoComponent implements OnInit {
   }
 
   borrar(inventario: Inventario) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el producto?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(inventario);
+      }
+    });
+  }
+
+  procesoBorrar(inventario: Inventario) {
     this.inventarioService.deleteInventario(inventario.id).subscribe({
       next: (response: any) => {
         Swal.fire({
@@ -137,7 +150,6 @@ export class ProductoComponent implements OnInit {
         }
       });
     } else {
-      console.log(this.inventarioSelected);
       this.inventarioService.saveInventario(this.inventarioSelected).subscribe({
         next: (response: any) => {
           Swal.fire({

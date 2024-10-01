@@ -53,14 +53,6 @@
 
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
-
-  <!--Spinner-->
-  <div *ngIf="isLoading">
-    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
-      <p style="color: white"> Pase la tarjeta para autenticar </p>
-    </ngx-spinner>
-  </div>
-  <!--End of Spinner-->
 </div>
 
 <div class="main-body" *ngIf="!displayTable">

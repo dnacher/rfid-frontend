@@ -3,16 +3,14 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {LibroService} from '../../service/biblioteca/libro.service';
 import {Libro} from '../../model/Libro';
-import {AlumnoService} from '../../service/asistencia/alumno.service';
 import {concatMap, EMPTY, from, Observable, switchMap, toArray} from 'rxjs';
 import {Prestamo} from '../../model/Prestamo';
-import {PrestamoService} from '../../service/biblioteca/prestamo.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2'
-import {Curso} from '../../model/Curso';
-import {CursoService} from '../../service/biblioteca/curso.service';
+import {LibroService} from '../../service/biblioteca/libro.service';
+import {AlumnoService} from '../../service/asistencia/alumno.service';
+import {PrestamoService} from '../../service/biblioteca/prestamo.service';
 
 @Component({
   selector: 'app-biblioteca',
@@ -36,9 +34,6 @@ export class BibliotecaComponent implements OnInit {
   isdiasSeleccionados = true;
   isFecha = true;
   isTable = true;
-  isCurso = false;
-  cursos: Curso[];
-  curso;
   displayedColumns: string[] = [
     'id',
     'titulo',
@@ -74,13 +69,11 @@ export class BibliotecaComponent implements OnInit {
               private libroService: LibroService,
               private alumnoService: AlumnoService,
               private prestamoService: PrestamoService,
-              private spinnerService: NgxSpinnerService,
-              private cursoService: CursoService) {
+              private spinnerService: NgxSpinnerService) {
   }
 
   ngOnInit() {
     this.getLibros();
-    this.getCursos();
   }
 
   getLibros() {
@@ -90,15 +83,6 @@ export class BibliotecaComponent implements OnInit {
         this.dataSource = new MatTableDataSource(value.message);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-      },
-      error: console.log,
-    });
-  }
-
-  getCursos() {
-    this.cursoService.getCursos().subscribe({
-      next: (value) => {
-        this.cursos = value.message;
       },
       error: console.log,
     });
@@ -183,7 +167,6 @@ export class BibliotecaComponent implements OnInit {
         this.isdiasSeleccionados = false;
         this.isFecha = false;
         this.isTable = false;
-        this.isCurso = false;
         this.opcionText = 'Devolver'
         break;
       case 'Prestamo Libros':
@@ -191,7 +174,6 @@ export class BibliotecaComponent implements OnInit {
         this.isdiasSeleccionados = true;
         this.isFecha = true;
         this.isTable = true;
-        this.isCurso = false;
         this.opcionText = 'Guardar';
     }
   }
@@ -215,6 +197,15 @@ export class BibliotecaComponent implements OnInit {
     } else {
       this.guardarHabilitado = false;
     }
+  }
+
+  private formatDate(date: Date): string {
+    const d = new Date(date);
+    const month = '' + (d.getMonth() + 1);
+    const day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
   }
 
   devolver() {

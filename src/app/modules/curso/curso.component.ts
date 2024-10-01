@@ -3,7 +3,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import {Curso} from '../../model/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
@@ -34,8 +33,7 @@ export class CursoComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog,
-              private cursoService: CursoService,
-              private spinnerService: NgxSpinnerService) {
+              private cursoService: CursoService) {
   }
 
   ngOnInit() {
@@ -75,11 +73,24 @@ export class CursoComponent implements OnInit {
   }
 
   borrar(curso: Curso) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el curso?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(curso);
+      }
+    });
+  }
+
+  procesoBorrar(curso: Curso) {
     this.cursoService.deleteCurso(curso.id).subscribe({
       next: (response: any) => {
         Swal.fire({
           title: 'Eliminado!',
-          text: 'El libro ha sido eliminado correctamente.',
+          text: 'El curso ha sido eliminado correctamente.',
           icon: 'success'
         });
         this.getCursos(); // Actualizar la lista de libros después de eliminar.
@@ -92,7 +103,7 @@ export class CursoComponent implements OnInit {
         });
         this.getCursos();
       }
-    });
+    })
   }
 
   editar(curso: Curso) {
@@ -106,7 +117,7 @@ export class CursoComponent implements OnInit {
       this.cursoService.updateCurso(this.cursoSelected).subscribe({
         next: (response: any) => {
           Swal.fire({
-            title: 'Guardado!',
+            title: 'Actualizado!',
             text: 'Se actualizo el libro correctamente',
             icon: 'success'
           });
@@ -123,7 +134,6 @@ export class CursoComponent implements OnInit {
         }
       });
     } else {
-      console.log(this.cursoSelected);
       this.cursoService.saveCurso(this.cursoSelected).subscribe({
         next: (response: any) => {
           Swal.fire({

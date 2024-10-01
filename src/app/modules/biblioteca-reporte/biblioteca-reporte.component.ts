@@ -6,8 +6,7 @@ import {MatSort} from '@angular/material/sort';
 import {LibroService} from '../../service/biblioteca/libro.service';
 import {Libro} from '../../model/Libro';
 import {AlumnoService} from '../../service/asistencia/alumno.service';
-import {concatMap, EMPTY, from, Observable, switchMap, toArray} from 'rxjs';
-import {Prestamo} from '../../model/Prestamo';
+import {EMPTY, switchMap} from 'rxjs';
 import {PrestamoService} from '../../service/biblioteca/prestamo.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2'
@@ -15,7 +14,7 @@ import {Curso} from '../../model/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
 
 @Component({
-  selector: 'app-biblioteca',
+  selector: 'app-biblioteca-reporte',
   templateUrl: './biblioteca-reporte.component.html',
   styleUrls: ['./biblioteca-reporte.component.scss'],
 })
@@ -45,8 +44,7 @@ export class BibliotecaReporteComponent implements OnInit {
     'fechaDevolucionReal',
     'devuelto',
     'alumno',
-    'libro',
-    'acciones'
+    'libro'
   ];
   displayTable = true;
   dataSource!: MatTableDataSource<Libro>;

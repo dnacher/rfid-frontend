@@ -59,18 +59,6 @@
       </mat-grid-tile>
     </div>
 
-    <div *ngIf="isCurso">
-      <mat-grid-tile>
-        <mat-form-field>
-          <mat-label>Seleccionar curso</mat-label>
-          <mat-select [(ngModel)]="curso">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let curso of cursos" [value]="curso.id">{{ curso.nombre }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-grid-tile>
-    </div>
-
     <!-- Combo Box -->
     <div *ngIf="isdiasSeleccionados">
       <mat-grid-tile>
@@ -167,4 +155,73 @@
     </ngx-spinner>
   </div>
   <!--End of Spinner-->
+</div>
+
+<div class="main-body" *ngIf="!displayTable">
+  <span><h2>{{tituloReporte}}</h2></span><br>
+  <button mat-raised-button color="primary" (click)="displayLibros()">Volver</button><br><br>
+
+  <table mat-table [dataSource]="prestamosList" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id</th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+    <!-- ID Column -->
+    <ng-container matColumnDef="fechaPrestamo">
+      <th mat-header-cell *matHeaderCellDef> Fecha Prestamo</th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaPrestamo}} </td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="fechaDevolucion">
+      <th mat-header-cell *matHeaderCellDef> Fecha Devolucion </th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaDevolucion}}</td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="fechaDevolucionReal">
+      <th mat-header-cell *matHeaderCellDef> Fecha Devolucion Real</th>
+      <td mat-cell *matCellDef="let row"> {{row.fechaDevolucionReal}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="devuelto">
+      <th mat-header-cell *matHeaderCellDef> Devuelto</th>
+      <td mat-cell *matCellDef="let row" style="text-align: center;">
+    <span
+      class="circulo"
+      [ngClass]="{
+        'circulo-verde': row.devuelto,
+        'circulo-amarillo': !row.devuelto && isWithinDueDate(row.fechaDevolucion),
+        'circulo-rojo': !row.devuelto && !isWithinDueDate(row.fechaDevolucion)
+      }" style="display: inline-block; vertical-align: middle;">
+    </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="alumno">
+      <th mat-header-cell *matHeaderCellDef> Alumno </th>
+      <td mat-cell *matCellDef="let row"> {{row.alumno.nombre}} {{row.alumno.apellido}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="libro">
+      <th mat-header-cell *matHeaderCellDef> Libro </th>
+      <td mat-cell *matCellDef="let row"> {{row.libro.titulo}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones</th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-button (click)="devolverLibro(row)">Devolver</button>
+      </td>
+    </ng-container>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No se encontraron datos</td>
+    </tr>
+
+    <tr mat-header-row *matHeaderRowDef="displayedPrestamo"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedPrestamo;"></tr>
+
+  </table>
 </div>

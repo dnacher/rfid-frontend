@@ -9,7 +9,6 @@ import {Usuario} from '../../model/Usuario';
 import {UsuarioService} from '../../service/seguridad/usuario.service';
 import {TipoUsuario} from '../../model/TipoUsuario';
 import {TipoUsuarioService} from '../../service/seguridad/tipoUsuario.service';
-import {Curso} from '../../model/Curso';
 
 @Component({
   selector: 'app-usuario',
@@ -92,11 +91,24 @@ export class UsuarioComponent implements OnInit {
   }
 
   borrar(usuario: Usuario) {
+    Swal.fire({
+      title: 'Realmente deseas borrar el usuario?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesoBorrar(usuario);
+      }
+    });
+  }
+
+  procesoBorrar(usuario: Usuario) {
     this.usuarioService.deleteUsuarioById(usuario.id).subscribe({
       next: (response: any) => {
         Swal.fire({
           title: 'Eliminado!',
-          text: 'El libro ha sido eliminado correctamente.',
+          text: 'El usuario ha sido eliminado correctamente.',
           icon: 'success'
         });
         this.getUsuarios(); // Actualizar la lista de libros después de eliminar.
@@ -129,7 +141,7 @@ export class UsuarioComponent implements OnInit {
         next: (response: any) => {
           Swal.fire({
             title: 'Guardado!',
-            text: 'Se actualizo el libro correctamente',
+            text: 'Se actualizo el usuario correctamente',
             icon: 'success'
           });
           this.usuarioSelected = new Usuario();
@@ -151,7 +163,7 @@ export class UsuarioComponent implements OnInit {
         next: (response: any) => {
           Swal.fire({
             title: 'Guardado!',
-            text: 'Se guardo el libro correctamente',
+            text: 'Se guardo el usuario correctamente',
             icon: 'success'
           });
           this.usuarioSelected = new Usuario();

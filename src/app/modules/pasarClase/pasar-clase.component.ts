@@ -3,7 +3,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import {Alumno} from '../../model/Alumno';
 import {AlumnoService} from '../../service/asistencia/alumno.service';
@@ -43,8 +42,7 @@ export class PasarClaseComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
               private alumnoService: AlumnoService,
-              private cursoService: CursoService,
-              private spinnerService: NgxSpinnerService) {
+              private cursoService: CursoService) {
   }
 
   ngOnInit() {

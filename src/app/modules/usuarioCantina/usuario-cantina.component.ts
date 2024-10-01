@@ -371,9 +371,7 @@ export class UsuarioCantinaComponent implements OnInit {
     console.log(row);
 
     return this.transaccionService.cancelTransaccion(row.uuid).subscribe({
-      next: (response) => {
-        console.log(response);
-        console.log(row.usuarioCantina.alumno.uidCard);
+      next: () => {
         this.isLoading = false;
         this.spinnerService.hide();
         this.getReporte(row.usuarioCantina.alumno.uidCard);
