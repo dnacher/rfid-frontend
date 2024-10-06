@@ -38,4 +38,17 @@ export class UsuarioService {
     return this.http.put(`${this.baseUrl}`, usuario);
   }
 
+  saveUsuarioWithImagen(usuario: Usuario, file: File): Observable<any> {
+    const formData: FormData = new FormData();
+
+    // Agregar el objeto usuario al FormData como JSON string
+    formData.append('usuario', JSON.stringify(usuario));
+
+    // Agregar el archivo
+    formData.append('file', file);
+    console.log(formData);
+    // Enviar la solicitud POST con el FormData
+    return this.http.post<any>(`${this.baseUrl}/imagen`, formData);
+  }
+
 }

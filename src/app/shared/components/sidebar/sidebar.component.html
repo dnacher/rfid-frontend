@@ -4,7 +4,7 @@
       <h2>{{apiService.user}}</h2>
       <h4>{{apiService.userType}}</h4>
     </div>
-    <img [src]='userImage' alt="Usuario" style="width: 50px; height: 50px;">
+    <img *ngIf="verImagen" [src]="imagen" alt="Usuario" style="width: 50px; height: 50px;">
   </div>
 
   <mat-divider></mat-divider>

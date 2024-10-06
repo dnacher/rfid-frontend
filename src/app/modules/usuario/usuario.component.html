@@ -90,6 +90,11 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field appearance="fill">
+    <mat-label>Subir Imagen</mat-label>
+    <input type="file" matInput (change)="onFileSelected($event)" accept="image/*">
+  </mat-form-field>
+
   <mat-grid-list cols="3" rowHeight="4:1">
 
     <mat-grid-tile *ngIf="nombreBoton!='Actualizar'">

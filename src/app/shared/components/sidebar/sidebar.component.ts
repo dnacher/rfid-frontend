@@ -22,9 +22,11 @@ export class SidebarComponent implements OnInit {
   public menuConfiguracion = [];
   public listaItems: PaginaItem[] = [];
   private usuarioSub: Subscription;
-  userImage = 'assets/user.png';
+  private imagenSub: Subscription;
+  public imagen;
   public tienePermisoSeguridad = false;
   public verMenu = false;
+  public verImagen = false;
 
   public itemConfiguracion = new PaginaItem(null, null, 'Configuración', null, 'Configuracion', true);
   public itemSeguridad = new PaginaItem(null, null, 'Seguridad', null, 'Seguridad', true);
@@ -57,6 +59,15 @@ export class SidebarComponent implements OnInit {
         this.verMenu = true;
       } else {
         this.verMenu = false;
+      }
+    });
+
+    this.imagenSub = this.cambiarUsuarioService.imagen$.subscribe(imagen => {
+      if (imagen) {
+        this.imagen = imagen;
+        this.verImagen = true;
+      } else {
+        this.verImagen = false;
       }
     });
 

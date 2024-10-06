@@ -32,6 +32,9 @@ export class UsuarioComponent implements OnInit {
   isLoading = false;
   nombreBoton = 'Guardar';
   confirmPassword = '';
+  imagenSeleccionada: File | null = null;
+  imagenVistaPrevia: string | null = null;
+  maxSizeInBytes = 10 * 1024 * 1024; // 10 MB
 
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort!: MatSort;
@@ -159,31 +162,56 @@ export class UsuarioComponent implements OnInit {
       });
     } else {
       console.log(this.usuarioSelected);
-      this.usuarioService.saveUsuario(this.usuarioSelected).subscribe({
-        next: (response: any) => {
-          Swal.fire({
-            title: 'Guardado!',
-            text: 'Se guardo el usuario correctamente',
-            icon: 'success'
-          });
-          this.usuarioSelected = new Usuario();
-          this.confirmPassword = '';
-          this.getUsuarios();
-          this.displayTable = true;
-        },
-        error: (error) => {
+      if (this.imagenSeleccionada) {
+        if (this.imagenSeleccionada.size > this.maxSizeInBytes) {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: error,
+            text: 'El archivo es demasiado grande. El tamaño máximo permitido es 10 MB.',
+          });
+        } else {
+          this.usuarioService.saveUsuarioWithImagen(this.usuarioSelected, this.imagenSeleccionada).subscribe({
+            next: (response: any) => {
+              Swal.fire({
+                title: 'Guardado!',
+                text: 'Se guardo el usuario correctamente',
+                icon: 'success'
+              });
+              this.usuarioSelected = new Usuario();
+              this.confirmPassword = '';
+              this.getUsuarios();
+              this.displayTable = true;
+            },
+            error: (error) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error,
+              });
+            }
           });
         }
-      });
+      }
     }
   }
 
   passwordsNoCoinciden(): boolean {
     return this.usuarioSelected.password !== this.confirmPassword;
   }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+
+      // Crear una vista previa de la imagen
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenVistaPrevia = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
 
 }

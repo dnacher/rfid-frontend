@@ -13,14 +13,17 @@ export class ApiService {
 
   public user: string;
   public userType: string;
-  public pic: string;
+  public imagen: string;
 
   constructor(private http: HttpClient,
               private usarioService: UsuarioService,
               private cambiarUsaurioService: CambiarUsuarioService) {
     this.user = localStorage.getItem('usuarioNombre');
     this.userType = localStorage.getItem('tipoUsuario');
-    this.pic = localStorage.getItem('pic');
+    this.imagen = localStorage.getItem('imagen');
+    this.cambiarUsaurioService.imagen$.subscribe((imagen) => {
+      this.imagen = imagen;
+    });
   }
 
   login(creds: Credentials) {
@@ -39,9 +42,13 @@ export class ApiService {
         next: (res) => {
           localStorage.setItem('usuarioNombre', res.message.nombre);
           localStorage.setItem('tipoUsuario', res.message.tipoUsuario.nombre);
-          localStorage.setItem('tipoUsuarioId', res.message.tipoUsuario.id)
-          localStorage.setItem('pic', 'user.png');
-          this.cambiarUsaurioService.cambiarUsuario(res.message.tipoUsuario.id)
+          localStorage.setItem('tipoUsuarioId', res.message.tipoUsuario.id);
+          const defaultUserImage = 'assets/usuarios/user.png';
+          console.log(res.message);
+          const userImage = res.message.imagen ? 'assets/usuarios/' + res.message.imagen : defaultUserImage;
+          localStorage.setItem('imagen', userImage);
+          this.cambiarUsaurioService.cambiarUsuario(res.message.tipoUsuario.id);
+          this.cambiarUsaurioService.cambiarImagen(userImage);
           this.user = res.message.nombre;
           this.userType = res.message.tipoUsuario.nombre;
         },
@@ -59,9 +66,10 @@ export class ApiService {
     localStorage.removeItem('token');
     localStorage.removeItem('usuarioNombre');
     localStorage.removeItem('tipoUsuario');
-    localStorage.removeItem('pic');
+    localStorage.removeItem('imagen');
     this.user = '';
     this.userType = '';
     this.cambiarUsaurioService.cambiarUsuario(null);
+    this.cambiarUsaurioService.cambiarImagen(null);
   }
 }
