@@ -20,6 +20,7 @@ import {UsuarioComponent} from './modules/usuario/usuario.component';
 import {PasarClaseComponent} from './modules/pasarClase/pasar-clase.component';
 import {BibliotecaReporteComponent} from './modules/biblioteca-reporte/biblioteca-reporte.component';
 import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
+import {AppConfigComponent} from './modules/appConfig/appConfig.component';
 
 const routes: Routes = [{
   path: '',
@@ -71,6 +72,11 @@ const routes: Routes = [{
     {
       path: 'permisos',
       component: PermisoComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'app-config',
+      component: AppConfigComponent,
       canActivate: [AuthGuard],
     },
     {

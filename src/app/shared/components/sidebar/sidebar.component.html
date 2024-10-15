@@ -24,6 +24,11 @@
         <mat-icon>security</mat-icon>
         {{ itemSeguridad.tituloMenu }}
       </a>
+
+      <a mat-list-item routerLinkActive="list-item-active" (click)="clickValue(itemAppKey)">
+        <mat-icon>settings</mat-icon>
+        {{ itemAppKey.tituloMenu }}
+      </a>
     </div>
   </div>
 </mat-nav-list>

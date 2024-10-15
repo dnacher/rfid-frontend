@@ -28,8 +28,8 @@ export class SidebarComponent implements OnInit {
   public verMenu = false;
   public verImagen = false;
 
-  public itemConfiguracion = new PaginaItem(null, null, 'Configuración', null, 'Configuracion', true);
   public itemSeguridad = new PaginaItem(null, null, 'Seguridad', null, 'Seguridad', true);
+  public itemAppKey = new PaginaItem(null, 'menuSeguridad', 'App config', '/app-config', 'Seguridad', false);
 
   public menuActual;
   public carpetaActual = 'Principal';

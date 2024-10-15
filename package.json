@@ -28,7 +28,7 @@
     "highcharts-angular": "^4.0.1",
     "ngx-spinner": "^17.0.0",
     "rxjs": "~7.8.1",
-    "sweetalert2": "^11.12.4",
+    "sweetalert2": "^11.14.3",
     "tslib": "^2.6.3",
     "xlsx": "^0.18.5",
     "zone.js": "~0.14.10"
