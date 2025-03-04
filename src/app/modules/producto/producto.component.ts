@@ -4,9 +4,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
-import {Inventario} from '../../model/Inventario';
+import {Inventario} from '../../model/cantina/Inventario';
 import {InventarioService} from '../../service/cantina/inventario.service';
-import {Producto} from '../../model/Producto';
+import {Producto} from '../../model/cantina/Producto';
 
 @Component({
   selector: 'app-libro',

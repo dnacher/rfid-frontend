@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve --port=4220",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "start:docker": "ng serve --port=4200 --configuration=production"
   },
   "private": true,
   "dependencies": {

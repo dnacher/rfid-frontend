@@ -1,0 +1,41 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.main-body {
+  padding-top: 20px;
+  margin: 0 auto;
+  max-width: 1348px;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.action {
+  display: flex;
+  gap: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+.circulo {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.circulo-verde {
+  background-color: #bdecb6;
+}
+
+.circulo-amarillo {
+  background-color: #f6dc69;
+}
+
+.circulo-rojo {
+  background-color: #c81d11;
+}
+

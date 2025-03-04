@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {TipoUsuario} from '../../model/TipoUsuario';
+import {TipoUsuario} from '../../model/core/TipoUsuario';
 import {TipoUsuarioService} from '../../service/seguridad/tipoUsuario.service';
-import {PermisoUsuario} from '../../model/PermisoUsuario';
+import {PermisoUsuario} from '../../model/core/PermisoUsuario';
 import {PermisoUsuarioService} from '../../service/seguridad/permisoUsuario.service';
-import {PaginaItem} from '../../model/PaginaItem';
+import {PaginaItem} from '../../model/core/PaginaItem';
 import {PaginaItemsService} from '../../service/seguridad/paginaItems.service';
 import Swal from 'sweetalert2';
 

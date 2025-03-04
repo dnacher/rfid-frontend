@@ -9,7 +9,7 @@ export class CambiarUsuarioService {
   private usuarioSubject = new BehaviorSubject<string>(null); // Maneja el usuario actual
   usuario$ = this.usuarioSubject.asObservable(); // Exponemos como observable para suscribirse
 
-  private imagenSubject = new BehaviorSubject<string>('assets/default-user.png');
+  private imagenSubject = new BehaviorSubject<string>('assets/usuarios/user.png');
   imagen$ = this.imagenSubject.asObservable();
 
   // Método para cambiar el usuario

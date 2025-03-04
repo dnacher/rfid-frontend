@@ -4,7 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
-import {Curso} from '../../model/Curso';
+import {Curso} from '../../model/core/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
 
 @Component({

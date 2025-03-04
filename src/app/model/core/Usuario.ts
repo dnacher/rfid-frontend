@@ -1,5 +1,5 @@
 import {TipoUsuario} from './TipoUsuario';
-import {AbstractDomainEntity} from './AbstractDomainEntity';
+import {AbstractDomainEntity} from '../AbstractDomainEntity';
 
 export class Usuario extends AbstractDomainEntity {
   id: number;

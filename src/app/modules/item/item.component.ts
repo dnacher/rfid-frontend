@@ -4,17 +4,17 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
-import {TipoUsuario} from '../../model/core/TipoUsuario';
-import {TipoUsuarioService} from '../../service/seguridad/tipoUsuario.service';
+import {Item} from '../../model/prestamo/Item';
+import {ItemService} from '../../service/prestamo/item.service';
 
 @Component({
-  selector: 'app-libro',
-  templateUrl: './tipo-usuario.component.html',
-  styleUrls: ['./tipo-usuario.component.scss'],
+  selector: 'app-item',
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.scss'],
 })
-export class TipoUsuarioComponent implements OnInit {
+export class ItemComponent implements OnInit {
 
-  titulo = 'Tipo Usuario';
+  titulo = 'Items';
   displayedColumns: string[] = [
     'id',
     'nombre',
@@ -22,9 +22,9 @@ export class TipoUsuarioComponent implements OnInit {
     'acciones'
   ];
   displayTable = true;
-  dataSource!: MatTableDataSource<TipoUsuario>;
-  tipoUsuarios: TipoUsuario[] = [];
-  tipoUsuarioSelected: TipoUsuario;
+  dataSource!: MatTableDataSource<Item>;
+  items: Item[] = [];
+  itemSelected: Item;
   isLoading = false;
   nombreBoton = 'Guardar';
 
@@ -33,28 +33,28 @@ export class TipoUsuarioComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog,
-              private tipoUsuarioService: TipoUsuarioService) {
+              private itemService: ItemService) {
   }
 
   ngOnInit() {
-    this.getTipoUsuarios();
+    this.getItems();
   }
 
-  agregarCurso() {
+  agregarItem() {
     this.nombreBoton = 'Guardar';
-    this.tipoUsuarioSelected = new TipoUsuario();
+    this.itemSelected = new Item(null, '');
     this.displayTable = false;
   }
 
   volver() {
     this.displayTable = true;
-    this.getTipoUsuarios();
+    this.getItems();
   }
 
-  getTipoUsuarios() {
-    this.tipoUsuarioService.getTipoUsuarios().subscribe({
+  getItems() {
+    this.itemService.getItems().subscribe({
       next: (value) => {
-        this.tipoUsuarios = value.message;
+        this.items = value.message;
         this.dataSource = new MatTableDataSource(value.message);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -72,28 +72,28 @@ export class TipoUsuarioComponent implements OnInit {
     }
   }
 
-  borrar(tipoUsuario: TipoUsuario) {
+  borrar(item: Item) {
     Swal.fire({
-      title: 'Realmente deseas borrar el tipo de usuario?',
+      title: 'Realmente deseas borrar el item?',
       showDenyButton: true,
       confirmButtonText: 'Si',
       denyButtonText: `No`
     }).then((result) => {
       if (result.isConfirmed) {
-        this.procesoBorrar(tipoUsuario);
+        this.procesoBorrar(item);
       }
     });
   }
 
-  procesoBorrar(tipoUsuario: TipoUsuario) {
-    this.tipoUsuarioService.deleteTipoUsuarioById(tipoUsuario.id).subscribe({
+  procesoBorrar(item: Item) {
+    this.itemService.deleteItem(item.id).subscribe({
       next: (response: any) => {
         Swal.fire({
           title: 'Eliminado!',
-          text: 'El tipo de usuario ha sido eliminado correctamente.',
+          text: 'El item ha sido eliminado correctamente.',
           icon: 'success'
         });
-        this.getTipoUsuarios(); // Actualizar la lista de libros después de eliminar.
+        this.getItems(); // Actualizar la lista de libros después de eliminar.
       },
       error: (error) => {
         Swal.fire({
@@ -101,28 +101,28 @@ export class TipoUsuarioComponent implements OnInit {
           title: 'Oops...',
           text: error,
         });
-        this.getTipoUsuarios();
+        this.getItems();
       }
-    });
+    })
   }
 
-  editar(tiposUsuario: TipoUsuario) {
+  editar(item: Item) {
     this.nombreBoton = 'Actualizar';
-    this.tipoUsuarioSelected = tiposUsuario;
+    this.itemSelected = item;
     this.displayTable = false;
   }
 
   guardar() {
-    if (this.tipoUsuarioSelected.id) {
-      this.tipoUsuarioService.updateTipoUsuario(this.tipoUsuarioSelected).subscribe({
-        next: () => {
+    if (this.itemSelected.id) {
+      this.itemService.updateItem(this.itemSelected).subscribe({
+        next: (response: any) => {
           Swal.fire({
-            title: 'Guardado!',
-            text: 'Se actualizo el tipo de usuario correctamente',
+            title: 'Actualizado!',
+            text: 'Se actualizo el libro correctamente',
             icon: 'success'
           });
-          this.tipoUsuarioSelected = new TipoUsuario();
-          this.getTipoUsuarios();
+          this.itemSelected = new Item(null, '');
+          this.getItems();
           this.displayTable = true;
         },
         error: (error) => {
@@ -134,15 +134,15 @@ export class TipoUsuarioComponent implements OnInit {
         }
       });
     } else {
-      this.tipoUsuarioService.saveTipoUsuario(this.tipoUsuarioSelected).subscribe({
-        next: () => {
+      this.itemService.saveItem(this.itemSelected).subscribe({
+        next: (response: any) => {
           Swal.fire({
             title: 'Guardado!',
-            text: 'Se guardo el tipo de usuario correctamente',
+            text: 'Se guardo el libro correctamente',
             icon: 'success'
           });
-          this.tipoUsuarioSelected = new TipoUsuario();
-          this.getTipoUsuarios();
+          this.itemSelected = new Item(null, '');
+          this.getItems();
           this.displayTable = true;
         },
         error: (error) => {

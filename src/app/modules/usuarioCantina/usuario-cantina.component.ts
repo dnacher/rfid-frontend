@@ -8,10 +8,10 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import {switchMap} from 'rxjs';
 import {UsuarioCantinaService} from '../../service/cantina/usuario-cantina.service';
-import {HistorialUsuarioCantina} from '../../model/HistorialUsuarioCantina';
+import {HistorialUsuarioCantina} from '../../model/cantina/HistorialUsuarioCantina';
 import {HistorialService} from '../../service/cantina/historial.service';
 import {TransaccionService} from '../../service/cantina/transaccion.service';
-import {Transaccion} from '../../model/Transaccion';
+import {Transaccion} from '../../model/cantina/Transaccion';
 
 @Component({
   selector: 'app-libro',

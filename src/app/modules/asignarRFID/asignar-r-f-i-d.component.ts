@@ -6,9 +6,9 @@ import {MatSort} from '@angular/material/sort';
 import {LibroService} from '../../service/biblioteca/libro.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
-import {Alumno} from '../../model/Alumno';
+import {Alumno} from '../../model/core/Alumno';
 import {AlumnoService} from '../../service/asistencia/alumno.service';
-import {Curso} from '../../model/Curso';
+import {Curso} from '../../model/core/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
 import {EMPTY, switchMap} from 'rxjs';
 

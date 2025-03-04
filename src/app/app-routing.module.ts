@@ -21,6 +21,8 @@ import {PasarClaseComponent} from './modules/pasarClase/pasar-clase.component';
 import {BibliotecaReporteComponent} from './modules/biblioteca-reporte/biblioteca-reporte.component';
 import {BibliotecaComponent} from './modules/biblioteca/biblioteca.component';
 import {AppConfigComponent} from './modules/appConfig/appConfig.component';
+import {ItemComponent} from './modules/item/item.component';
+import {StockComponent} from './modules/stock/stock.component';
 
 const routes: Routes = [{
   path: '',
@@ -117,6 +119,16 @@ const routes: Routes = [{
     {
       path: 'biblioteca-reporte',
       component: BibliotecaReporteComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'item',
+      component: ItemComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'stock',
+      component: StockComponent,
       canActivate: [AuthGuard],
     }
     ]

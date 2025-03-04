@@ -3,12 +3,12 @@ import {AsistenciaService} from '../../service/asistencia/asistencia.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
-import {Asistencia} from '../../model/Asistencia';
-import {Curso} from '../../model/Curso';
+import {Asistencia} from '../../model/asistencia/Asistencia';
+import {Curso} from '../../model/core/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
 import {MatSort} from '@angular/material/sort';
 import * as XLSX from 'xlsx';
-import {Alumno} from '../../model/Alumno';
+import {Alumno} from '../../model/core/Alumno';
 import Swal from 'sweetalert2';
 
 @Component({

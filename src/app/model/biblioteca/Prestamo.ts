@@ -1,4 +1,4 @@
-import {Alumno} from './Alumno';
+import {Alumno} from '../core/Alumno';
 import {Libro} from './Libro';
 
 export class Prestamo {

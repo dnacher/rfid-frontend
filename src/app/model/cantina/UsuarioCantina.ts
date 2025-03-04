@@ -1,4 +1,4 @@
-import {Alumno} from './Alumno';
+import {Alumno} from '../core/Alumno';
 
 export class UsuarioCantina {
   id: number;

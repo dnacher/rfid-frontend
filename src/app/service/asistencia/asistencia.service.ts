@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {Asistencia} from '../../model/Asistencia';
-import {Curso} from '../../model/Curso';
+import {Asistencia} from '../../model/asistencia/Asistencia';
+import {Curso} from '../../model/core/Curso';
 import {formatDate} from '@angular/common';
 
 @Injectable({

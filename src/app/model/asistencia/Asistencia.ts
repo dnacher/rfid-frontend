@@ -1,5 +1,5 @@
-import {AbstractDomainEntity} from './AbstractDomainEntity';
-import {Alumno} from './Alumno';
+import {AbstractDomainEntity} from '../AbstractDomainEntity';
+import {Alumno} from '../core/Alumno';
 
 export class Asistencia extends AbstractDomainEntity {
   id: number;

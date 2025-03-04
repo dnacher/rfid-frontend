@@ -4,13 +4,13 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import {LibroService} from '../../service/biblioteca/libro.service';
-import {Libro} from '../../model/Libro';
+import {Libro} from '../../model/biblioteca/Libro';
 import {AlumnoService} from '../../service/asistencia/alumno.service';
 import {EMPTY, switchMap} from 'rxjs';
 import {PrestamoService} from '../../service/biblioteca/prestamo.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2'
-import {Curso} from '../../model/Curso';
+import {Curso} from '../../model/core/Curso';
 import {CursoService} from '../../service/biblioteca/curso.service';
 
 @Component({

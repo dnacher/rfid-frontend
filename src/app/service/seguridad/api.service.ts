@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
 import {UsuarioService} from './usuario.service';
-import {Credentials} from '../../model/Credentials';
+import {Credentials} from '../../model/seguridad/Credentials';
 import {CambiarUsuarioService} from './cambiar.usuario.service';
 
 @Injectable({

@@ -2,37 +2,37 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Curso} from '../../model/core/Curso';
+import {Item} from '../../model/prestamo/Item';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class CursoService {
+export class ItemService {
 
-  private baseUrl = `${environment.baseURL}/v1/cursos`;
+  private baseUrl = `${environment.baseURL}/v1/items`;
 
   constructor(private http: HttpClient) {
   }
 
-  getCursos(): Observable<any> {
+  getItems(): Observable<any> {
     console.log(this.baseUrl);
     return this.http.get(`${this.baseUrl}`);
   }
 
-  getCursoById(id: number): Observable<any> {
+  getItemById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  saveCurso(curso: Curso): Observable<any> {
-    return this.http.post(`${this.baseUrl}`, curso);
+  saveItem(item: Item): Observable<any> {
+    return this.http.post(`${this.baseUrl}`, item);
   }
 
-  updateCurso(curso: Curso): Observable<any> {
-    return this.http.put(`${this.baseUrl}`, curso);
+  updateItem(item: Item): Observable<any> {
+    return this.http.put(`${this.baseUrl}`, item);
   }
 
-  deleteCurso(id: number): Observable<any> {
+  deleteItem(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' });
   }
 

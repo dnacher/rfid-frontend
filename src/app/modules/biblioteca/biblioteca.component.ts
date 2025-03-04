@@ -3,9 +3,9 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
-import {Libro} from '../../model/Libro';
+import {Libro} from '../../model/biblioteca/Libro';
 import {concatMap, EMPTY, from, Observable, switchMap, toArray} from 'rxjs';
-import {Prestamo} from '../../model/Prestamo';
+import {Prestamo} from '../../model/biblioteca/Prestamo';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2'
 import {LibroService} from '../../service/biblioteca/libro.service';

@@ -1,6 +1,6 @@
 import {UsuarioCantina} from './UsuarioCantina';
 import {LineaTransaccion} from './LineaTransaccion';
-import {EstadoTransaccion} from '../enum/EstadoTransaccion';
+import {EstadoTransaccion} from '../../enum/EstadoTransaccion';
 
 export class Transaccion {
   id: number;

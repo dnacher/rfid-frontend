@@ -1,5 +1,5 @@
 import {UsuarioCantina} from './UsuarioCantina';
-import {TipoOperacion} from '../enum/TipoOperacion';
+import {TipoOperacion} from '../../enum/TipoOperacion';
 
 export class HistorialUsuarioCantina {
   id: number;

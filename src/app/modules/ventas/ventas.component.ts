@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Inventario} from '../../model/Inventario';
+import {Inventario} from '../../model/cantina/Inventario';
 import {InventarioService} from '../../service/cantina/inventario.service';
 import {Router} from '@angular/router';
 import {MatTableDataSource} from '@angular/material/table';
@@ -10,8 +10,8 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {switchMap} from 'rxjs';
 import {LibroService} from '../../service/biblioteca/libro.service';
 import {UsuarioCantinaService} from '../../service/cantina/usuario-cantina.service';
-import {UsuarioCantina} from '../../model/UsuarioCantina';
-import {Transaccion} from '../../model/Transaccion';
+import {UsuarioCantina} from '../../model/cantina/UsuarioCantina';
+import {Transaccion} from '../../model/cantina/Transaccion';
 import {TransaccionService} from '../../service/cantina/transaccion.service';
 
 @Component({

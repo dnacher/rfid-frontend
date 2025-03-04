@@ -4,7 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import {LibroService} from '../../service/biblioteca/libro.service';
-import {Libro} from '../../model/Libro';
+import {Libro} from '../../model/biblioteca/Libro';
 import Swal from 'sweetalert2';
 
 @Component({

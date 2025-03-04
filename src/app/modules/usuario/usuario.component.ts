@@ -5,9 +5,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import {NgxSpinnerService} from 'ngx-spinner';
 import Swal from 'sweetalert2';
-import {Usuario} from '../../model/Usuario';
+import {Usuario} from '../../model/core/Usuario';
 import {UsuarioService} from '../../service/seguridad/usuario.service';
-import {TipoUsuario} from '../../model/TipoUsuario';
+import {TipoUsuario} from '../../model/core/TipoUsuario';
 import {TipoUsuarioService} from '../../service/seguridad/tipoUsuario.service';
 
 @Component({

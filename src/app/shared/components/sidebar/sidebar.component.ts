@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../service/seguridad/api.service';
-import {PaginaItem} from '../../../model/PaginaItem';
+import {PaginaItem} from '../../../model/core/PaginaItem';
 import {PermisoUsuarioService} from '../../../service/seguridad/permisoUsuario.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit {
   public menuCantina = [];
   public menuSeguridad = [];
   public menuConfiguracion = [];
+  public menuPrestamo = [];
   public listaItems: PaginaItem[] = [];
   private usuarioSub: Subscription;
   private imagenSub: Subscription;
@@ -49,6 +50,7 @@ export class SidebarComponent implements OnInit {
     this.menuSeguridad = [];
     this.menuConfiguracion = [];
     this.listaItems = [];
+    this.menuPrestamo = [];
   }
 
   ngOnInit() {
@@ -125,6 +127,9 @@ export class SidebarComponent implements OnInit {
       case 'Cantina':
         this.menuActual = this.menuCantina;
         break;
+      case 'Prestamo':
+        this.menuActual = this.menuPrestamo;
+        break;
     }
   }
 
@@ -158,6 +163,8 @@ export class SidebarComponent implements OnInit {
         case 'menuConfiguracion':
           this.menuConfiguracion.push(item);
           break;
+        case 'menuPrestamo':
+          this.menuPrestamo.push(item);
       }
     });
     // Agregar el item "Inicio" si la lista tiene al menos un elemento
@@ -167,6 +174,7 @@ export class SidebarComponent implements OnInit {
     this.agregarInicioSiNoVacio(this.menuCantina, paginaInicio);
     this.agregarInicioSiNoVacio(this.menuSeguridad, paginaInicio);
     this.agregarInicioSiNoVacio(this.menuConfiguracion, paginaInicio);
+    this.agregarInicioSiNoVacio(this.menuPrestamo, paginaInicio);
   }
 
   verificarPermisoSeguridad() {

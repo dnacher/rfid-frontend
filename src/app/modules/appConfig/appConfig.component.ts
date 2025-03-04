@@ -4,7 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
-import {AppConfig} from '../../model/AppConfig';
+import {AppConfig} from '../../model/seguridad/AppConfig';
 import {PermisoUsuarioService} from '../../service/seguridad/permisoUsuario.service';
 
 @Component({
